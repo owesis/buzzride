@@ -5,7 +5,6 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/Preferences.dart';
 import 'package:buzzride/Util/Util.dart';
-import 'package:buzzride/Views/Auth/Login.dart';
 import 'package:buzzride/Views/Auth/Register.dart';
 import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +27,13 @@ class AuthIntroState extends State<AuthIntro> {
   void initState() {
     prefs.init();
     prefs.isLoggedIn().then((isLoggedIn) {
-      if (isLoggedIn)
-        SchedulerBinding.instance?.addPostFrameCallback((_) => pagerRemove(
+      if (isLoggedIn) {
+        SchedulerBinding.instance.addPostFrameCallback((_) => pagerRemove(
             context,
             MyHomePage(
               title: '',
             )));
+      }
     });
     // TODO: implement initState
     super.initState();
@@ -92,7 +92,7 @@ class AuthIntroState extends State<AuthIntro> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
                           decoration: BoxDecoration(
-                              color: OColors.introColor.withOpacity(0))),
+                              color: OColors.introColor.withOpacity(.99))),
                     ),
                     Container(
                       alignment: Alignment.bottomCenter,
@@ -124,27 +124,10 @@ class AuthIntroState extends State<AuthIntro> {
                       ),
                     ),
                     Positioned(
-                      bottom: MediaQuery.of(context).size.height * .20,
-                      right: 0,
-                      child: InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, left: 70, right: 70),
-                          decoration: BoxDecoration(
-                              color: OColors.white,
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  topLeft: Radius.circular(30))),
-                          child: Text(
-                            OLocale(isSwahili, 25).get(),
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: OColors.primary, fontSize: 16),
-                          ),
-                        ),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => Login())),
+                      top: MediaQuery.of(context).size.height * .20,
+                      left: 20,
+                      child: Image(
+                        image: AssetImage("assets/images/header_logo.png"),
                       ),
                     ),
                     Positioned(

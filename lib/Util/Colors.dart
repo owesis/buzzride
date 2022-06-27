@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OColors {
   static Color secondary = Color(0xffD47FA6);
-  static Color introColor = Color(0xff02B7E2);
+  static Color introColor = Color(0xff00AFCA);
   static Color profilePictureMainContainerColor = Color(0xff8A56AC);
   static Color primary = Color(0xff02B7E2);
   static Color white = Color(0xffFFFFFF);
