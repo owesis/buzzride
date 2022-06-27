@@ -15,5 +15,5 @@ class OColors {
   static Color opacity = Color(0xff646464);
   static Color textColor = Color(0xff606060);
   static Color transparent = Colors.transparent;
-  static Color buttonColor = Color(0xff352641);
+  static Color buttonColor = Color(0xffFDC50C);
 }

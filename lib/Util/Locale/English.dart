@@ -33,10 +33,11 @@ class English {
     "LOGIN",
     "SIGN UP",
     "SIGN IN",
-    "Plot listing, properties, real estate",
+    "The secret of getting ahead is getting started",
     "Register your orphanage for better health services",
     "Back",
     "Submit",
+    "Get Started",
   ];
 
   words() {

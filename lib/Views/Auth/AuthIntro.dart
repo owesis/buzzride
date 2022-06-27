@@ -5,7 +5,7 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/Preferences.dart';
 import 'package:buzzride/Util/Util.dart';
-import 'package:buzzride/Views/Auth/Register.dart';
+import 'package:buzzride/Views/Auth/Login.dart';
 import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -95,18 +95,22 @@ class AuthIntroState extends State<AuthIntro> {
                               color: OColors.introColor.withOpacity(.99))),
                     ),
                     Container(
-                      alignment: Alignment.bottomCenter,
                       width: MediaQuery.of(context).size.width / 1.2,
-                      height: 350,
+                      height: MediaQuery.of(context).size.height / 1.7,
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            OLocale(isSwahili, 0).get(),
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: OColors.white,
-                                fontWeight: FontWeight.bold),
-                          ), //logo
+                          AnimatedPositioned(
+                            width: 200.0,
+                            height: 200.0,
+                            top: 150,
+                            duration: const Duration(milliseconds: 5),
+                            curve: Curves.fastOutSlowIn,
+                            child: Image(
+                              image: AssetImage("./assets/images/car.png"),
+                              width: 200,
+                            ),
+                          ),
+                          //logo
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 15, left: 25, right: 25),
@@ -117,55 +121,54 @@ class AuthIntroState extends State<AuthIntro> {
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          const SizedBox(
-                            height: 50,
-                          ),
+                          const Spacer(),
                         ],
                       ),
                     ),
                     Positioned(
-                      top: MediaQuery.of(context).size.height * .20,
+                      top: MediaQuery.of(context).size.height * .15,
                       left: 20,
                       child: Image(
-                        image: AssetImage("assets/images/header_logo.png"),
+                        image: AssetImage("assets/images/logo.png"),
+                        width: 200,
                       ),
                     ),
                     Positioned(
                       bottom: MediaQuery.of(context).size.height * .10,
-                      left: 0,
-                      child: InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, left: 70, right: 70),
-                          decoration: BoxDecoration(
-                              color: OColors.primary,
-                              borderRadius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(30),
-                                  topRight: Radius.circular(30))),
-                          child: Text(
-                            OLocale(isSwahili, 26).get(),
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: OColors.white, fontSize: 16),
+                      child: Center(
+                        child: InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 70, right: 70),
+                            decoration: BoxDecoration(
+                                color: OColors.buttonColor,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(30))),
+                            child: Text(
+                              OLocale(isSwahili, 32).get(),
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: OColors.white, fontSize: 16),
+                            ),
                           ),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Login())),
                         ),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const Register())),
                       ),
                     ),
                     // Positioned(
                     //   child: _backButton(),
                     //   top: 30,
                     //   left: 0,
-                    // ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 15),
-                      width: 150,
-                      height: 4,
-                      color: OColors.white.withOpacity(.2),
-                    )
+                    // // ),
+                    // Container(
+                    //   margin: EdgeInsets.only(bottom: 15),
+                    //   width: 150,
+                    //   height: 4,
+                    //   color: OColors.white.withOpacity(.2),
+                    // )
                   ],
                 ),
               )

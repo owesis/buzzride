@@ -32,12 +32,13 @@ class LoginState extends State<Login> {
   void initState() {
     _preferences.init();
     _preferences.isLoggedIn().then((isLoggedIn) {
-      if (isLoggedIn)
-        SchedulerBinding.instance?.addPostFrameCallback((_) => pagerRemove(
+      if (isLoggedIn) {
+        SchedulerBinding.instance.addPostFrameCallback((_) => pagerRemove(
             context,
             MyHomePage(
               title: '',
             )));
+      }
     });
 
     // TODO: implement initState
