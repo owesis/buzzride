@@ -1,4 +1,4 @@
-import 'package:buzzride/Home/Home.dart';
+import 'package:buzzride/Views/Auth/AuthIntro.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             bodyText1: TextStyle(color: Color.fromRGBO(10, 10, 10, .6)),
             bodyText2: TextStyle(color: Color.fromRGBO(10, 10, 10, .6)),
           )),
-      home: const MyHomePage(title: title),
+      home: const AuthIntro(),
     );
   }
 }

@@ -1,13 +1,13 @@
 // ignore: file_names
 // ignore_for_file: file_names
 
-import 'package:buzzride/Auth/Login.dart';
-import 'package:buzzride/Auth/Register.dart';
-import 'package:buzzride/Home/Home.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/Preferences.dart';
 import 'package:buzzride/Util/Util.dart';
+import 'package:buzzride/Views/Auth/Login.dart';
+import 'package:buzzride/Views/Auth/Register.dart';
+import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -83,7 +83,7 @@ class AuthIntroState extends State<AuthIntro> {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                            "./assets/images/image1.jpg",
+                            "./assets/images/whole.png",
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -92,7 +92,7 @@ class AuthIntroState extends State<AuthIntro> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
                           decoration: BoxDecoration(
-                              color: OColors.introColor.withOpacity(.7))),
+                              color: OColors.introColor.withOpacity(0))),
                     ),
                     Container(
                       alignment: Alignment.bottomCenter,

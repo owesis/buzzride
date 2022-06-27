@@ -1,14 +1,14 @@
 // ignore: file_names
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_const_constructors
 
-import 'package:buzzride/Auth/Password.dart';
-import 'package:buzzride/Auth/Register.dart';
-import 'package:buzzride/Home/Home.dart';
 import 'package:buzzride/Models/Auth.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/Preferences.dart';
 import 'package:buzzride/Util/Util.dart';
+import 'package:buzzride/Views/Auth/Password.dart';
+import 'package:buzzride/Views/Auth/Register.dart';
+import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
