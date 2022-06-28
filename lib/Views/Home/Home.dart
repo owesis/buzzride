@@ -1,3 +1,6 @@
+import 'package:buzzride/Util/Colors.dart';
+import 'package:buzzride/Util/Drawer/drawer.dart';
+import 'package:buzzride/Util/Util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +25,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  late final _drawerController;
+
+  bool isVisibleDrawer = false;
+
+  List<Widget> menus = [];
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -35,6 +44,143 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    _drawerController = ZiDrawerController();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void MenuCategories() {
+    setState(() {
+      menus.add(Spacer());
+
+      menus.add(Container(
+        height: MediaQuery.of(context).size.height / 1.6,
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+        alignment: Alignment.bottomCenter,
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, index) => ListTile(
+            onTap: () => () {},
+            leading:
+                Icon(Icons.category, color: OColors.whiteFade.withOpacity(.6)),
+            title: Text(
+              "Home",
+              style: TextStyle(color: OColors.white, fontSize: 16),
+            ),
+          ),
+          itemCount: 2,
+        ),
+      ));
+
+      menus.add(Spacer());
+      menus.add(DefaultTextStyle(
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.white54,
+        ),
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Designed & Developed with ',
+                style: TextStyle(
+                    color: OColors.white.withOpacity(.4),
+                    fontWeight: FontWeight.w800),
+              ),
+              Icon(
+                Icons.favorite,
+                color: Colors.white.withOpacity(.6),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              InkWell(
+                child: Text(
+                  "by OWESIS",
+                  style: TextStyle(
+                      color: OColors.white.withOpacity(.4),
+                      fontWeight: FontWeight.w800),
+                ),
+                onTap: () => launchURL("https://owesis.com"),
+              )
+            ],
+          ),
+        ),
+      ));
+    });
+  }
+
+  Widget? _menuButton(BuildContext context) {
+    setState(() {
+      menus.clear();
+      MenuCategories();
+    });
+
+    return SizedBox(
+      child: InkWell(
+        child: isVisibleDrawer
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 5,
+                    margin: EdgeInsets.only(top: 15, left: 10),
+                    width: 33,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(inputColor).withOpacity(.5),
+                    ),
+                  ),
+                  Container(
+                    height: 5,
+                    margin: EdgeInsets.only(top: 7, left: 10),
+                    width: 25,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(inputColor).withOpacity(.5)),
+                  ),
+                  Container(
+                    height: 5,
+                    margin: EdgeInsets.only(top: 7, left: 10),
+                    width: 33,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(inputColor).withOpacity(.5),
+                    ),
+                  ),
+                ],
+              )
+            : Icon(
+                Icons.cancel,
+                size: 32,
+                color: OColors.primary,
+              ),
+        onTap: () {
+          _drawerController.showDrawer();
+
+          _drawerController.addListener(() {
+            setState(() {
+              if (!_drawerController.value.visible) {
+                isVisibleDrawer = true;
+              } else {
+                isVisibleDrawer = false;
+              }
+            });
+          });
+        },
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -42,47 +188,70 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return Drawerer(
+        child: Scaffold(
+          appBar: AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: Text(widget.title),
+            leading: _menuButton(context),
+          ),
+          body: Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-          ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        backdropColor: OColors.whiteFade,
+        controller: _drawerController,
+        drawer: SafeArea(
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            color: OColors.primary,
+            child: ListTileTheme(
+              textColor: OColors.white,
+              iconColor: OColors.primary,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  verticalDirection: VerticalDirection.down,
+                  children: menus,
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }

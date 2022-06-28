@@ -17,11 +17,23 @@ class AuthIntro extends StatefulWidget {
   AuthIntroState createState() => AuthIntroState();
 }
 
-class AuthIntroState extends State<AuthIntro> {
+class AuthIntroState extends State<AuthIntro>
+    with SingleTickerProviderStateMixin {
   // ignore: file_names
   bool isSwahili = false, isLoggedIn = false;
   Preferences prefs = Preferences();
   String? u;
+
+  final RelativeRectTween relativeRectTween = RelativeRectTween(
+    begin: RelativeRect.fromLTRB(240, 20, 200, 240),
+    end: RelativeRect.fromLTRB(0, 0, 0, 0),
+  );
+
+  late AnimationController _controller;
+  TextStyle style =
+      TextStyle(fontSize: 1, color: OColors.white.withOpacity(.1));
+
+  double carWidth = 0;
 
   @override
   void initState() {
@@ -35,6 +47,45 @@ class AuthIntroState extends State<AuthIntro> {
             )));
       }
     });
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _controller.forward(from: 0.0);
+    double st = 0;
+    _controller.addListener(() {
+      if (_controller.lastElapsedDuration?.inMilliseconds != null) {
+        int mil = _controller.lastElapsedDuration!.inMilliseconds;
+
+        setState(() {
+          if (mil < 800) {
+            carWidth += 3;
+            st += 0.2;
+
+            style =
+                TextStyle(fontSize: 24, color: OColors.white.withOpacity(st));
+
+            print(st);
+          } else if (mil == 800) {
+            carWidth = 200;
+            style = TextStyle(fontSize: 16, color: OColors.white);
+          }
+        });
+
+        print(carWidth);
+      }
+    });
+
+    _controller.addStatusListener((status) {
+      if (status == "completed") {
+        Future.delayed(Duration(milliseconds: 5000), () {
+          _controller.forward(from: 0.0);
+        });
+      }
+    });
+
     // TODO: implement initState
     super.initState();
   }
@@ -94,37 +145,34 @@ class AuthIntroState extends State<AuthIntro> {
                           decoration: BoxDecoration(
                               color: OColors.introColor.withOpacity(.99))),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      height: MediaQuery.of(context).size.height / 1.7,
-                      child: Column(
-                        children: <Widget>[
-                          AnimatedPositioned(
-                            width: 200.0,
-                            height: 200.0,
-                            top: 150,
-                            duration: const Duration(milliseconds: 5),
-                            curve: Curves.fastOutSlowIn,
-                            child: Image(
-                              image: AssetImage("./assets/images/car.png"),
-                              width: 200,
-                            ),
-                          ),
-                          //logo
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, left: 25, right: 25),
-                            child: Text(
-                              OLocale(false, 28).get(),
-                              style:
-                                  TextStyle(fontSize: 16, color: OColors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
+                    PositionedTransition(
+                      rect: relativeRectTween.animate(_controller),
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        padding: EdgeInsets.all(70),
+                        child: Image(
+                          image: AssetImage("./assets/images/car.png"),
+                          width: 200,
+                        ),
                       ),
                     ),
+
+                    Positioned(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: AnimatedDefaultTextStyle(
+                          child: Text(
+                            OLocale(false, 28).get(),
+                            textAlign: TextAlign.center,
+                          ),
+                          style: style,
+                          duration: Duration(milliseconds: 1000),
+                        ),
+                      ),
+                      bottom: MediaQuery.of(context).size.height / 4.0,
+                    ),
+
                     Positioned(
                       top: 100,
                       left: 20,
@@ -149,7 +197,7 @@ class AuthIntroState extends State<AuthIntro> {
                               OLocale(isSwahili, 32).get(),
                               textAlign: TextAlign.center,
                               style:
-                                  TextStyle(color: OColors.white, fontSize: 16),
+                                  TextStyle(color: OColors.white, fontSize: 18),
                             ),
                           ),
                           onTap: () => Navigator.of(context).push(

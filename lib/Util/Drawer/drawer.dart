@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: file_names
-class Drawer extends StatefulWidget {
-  const Drawer({
+class Drawerer extends StatefulWidget {
+  const Drawerer({
     Key? key,
     required this.child,
     required this.drawer,
@@ -62,7 +62,7 @@ class Drawer extends StatefulWidget {
   _DrawerState createState() => _DrawerState();
 }
 
-class _DrawerState extends State<Drawer> with SingleTickerProviderStateMixin {
+class _DrawerState extends State<Drawerer> with SingleTickerProviderStateMixin {
   late final ZiDrawerController _controller;
   late final AnimationController _animationController;
   late final Animation<double> _drawerScaleAnimation;
