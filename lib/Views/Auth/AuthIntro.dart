@@ -126,11 +126,11 @@ class AuthIntroState extends State<AuthIntro> {
                       ),
                     ),
                     Positioned(
-                      top: MediaQuery.of(context).size.height * .15,
+                      top: 100,
                       left: 20,
                       child: Image(
                         image: AssetImage("assets/images/logo.png"),
-                        width: 200,
+                        width: 140,
                       ),
                     ),
                     Positioned(
@@ -157,7 +157,7 @@ class AuthIntroState extends State<AuthIntro> {
                                   builder: (BuildContext context) => Login())),
                         ),
                       ),
-                    ),
+                    ), //BUTTON
                     // Positioned(
                     //   child: _backButton(),
                     //   top: 30,
