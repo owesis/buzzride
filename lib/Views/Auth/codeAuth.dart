@@ -64,196 +64,199 @@ class _CodeAuthState extends State<CodeAuth> {
       alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 140),
       width: MediaQuery.of(context).size.width / 1.2,
-      height: MediaQuery.of(context).size.height / 1.27,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            OLocale(isSwahili, 35).get(),
-            style: TextStyle(
-              fontSize: 18,
-              color: OColors.whiteFade,
+      height: MediaQuery.of(context).size.height / 1.4,
+      child: Container(
+        height: 250,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              OLocale(isSwahili, 35).get(),
+              style: TextStyle(
+                fontSize: 18,
+                color: OColors.whiteFade,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            OLocale(isSwahili, 39).get(),
-            style: TextStyle(
-              color: OColors.whiteFade,
+            const SizedBox(
+              height: 5,
             ),
-          ), //logo
-          const SizedBox(
-            height: 15,
-          ),
-
-          //TextField: phone Number
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 60,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey[500]!.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    // controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        hintText: "2",
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        )),
-                  ),
-                ),
+            Text(
+              OLocale(isSwahili, 39).get(),
+              style: TextStyle(
+                color: OColors.whiteFade,
               ),
-              Container(
-                height: 55,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[500]!.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    // controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        hintText: "2",
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        )),
-                  ),
-                ),
-              ),
-              Container(
-                height: 55,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[500]!.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    // controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        hintText: "2",
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        )),
-                  ),
-                ),
-              ),
-              Container(
-                height: 55,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[500]!.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    // controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        hintText: "2",
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        )),
-                  ),
-                ),
-              ),
-            ],
-          ), //
-
-          const Spacer(),
-
-          InkWell(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  color: OColors.buttonColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: !checking
-                  ? Text(
-                      OLocale(isSwahili, 36).get(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: OColors.white, fontSize: 16),
-                    )
-                  : spinkit,
+            ), //logo
+            const SizedBox(
+              height: 15,
             ),
-            // onTap: () => _checkUser(),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const BizHome()));
-            },
-          ) ////
-          ,
 
-          const SizedBox(
-            height: 40,
-          ),
-        ],
+            //TextField: phone Number
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      // controller: prefixPhoneNumber,
+                      style: const TextStyle(color: Colors.white, fontSize: 25),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: "",
+                          focusColor: OColors.primary,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: OColors.primary.withOpacity(.5)),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black.withOpacity(.3)),
+                          ),
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          )),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 55,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      // controller: prefixPhoneNumber,
+                      style: const TextStyle(color: Colors.white, fontSize: 25),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: "",
+                          focusColor: OColors.primary,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: OColors.primary.withOpacity(.5)),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black.withOpacity(.3)),
+                          ),
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          )),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 55,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      // controller: prefixPhoneNumber,
+                      style: const TextStyle(color: Colors.white, fontSize: 25),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: "",
+                          focusColor: OColors.primary,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: OColors.primary.withOpacity(.5)),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black.withOpacity(.3)),
+                          ),
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          )),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 55,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      // controller: prefixPhoneNumber,
+                      style: const TextStyle(color: Colors.white, fontSize: 25),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: "",
+                          focusColor: OColors.primary,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: OColors.primary.withOpacity(.5)),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black.withOpacity(.3)),
+                          ),
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          )),
+                    ),
+                  ),
+                ),
+              ],
+            ), //
+
+            const Spacer(),
+
+            InkWell(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: OColors.buttonColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
+                child: !checking
+                    ? Text(
+                        OLocale(isSwahili, 36).get(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: OColors.white, fontSize: 16),
+                      )
+                    : spinkit,
+              ),
+              // onTap: () => _checkUser(),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const BizHome()));
+              },
+            ) ////
+            ,
+
+            const SizedBox(
+              height: 40,
+            ),
+          ],
+        ),
       ),
     );
   }
