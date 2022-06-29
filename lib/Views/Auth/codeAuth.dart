@@ -79,7 +79,7 @@ class _CodeAuthState extends State<CodeAuth> {
             height: 5,
           ),
           Text(
-            '255 752824434',
+            OLocale(isSwahili, 39).get(),
             style: TextStyle(
               color: OColors.whiteFade,
             ),

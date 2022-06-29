@@ -43,7 +43,8 @@ class English {
     "A code has been sent to",
     "Next",
     "Phone Number",
-    "+255"
+    "+255",
+    "+255 7*****"
   ];
 
   words() {
