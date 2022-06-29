@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 33,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: OColors.white,
+                      color: OColors.buttonColor,
                     ),
                   ),
                   Container(
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 25,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: OColors.white),
+                        color: OColors.buttonColor),
                   ),
                   Container(
                     height: 5,
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 33,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: OColors.white,
+                      color: OColors.buttonColor,
                     ),
                   ),
                 ],
@@ -202,6 +202,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // the App.build method, and use it to set our appbar title.
             title: Text(widget.title),
             leading: _menuButton(context),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
           body: Center(
             // Center is a layout widget. It takes a single child and positions it
