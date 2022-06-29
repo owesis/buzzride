@@ -4,7 +4,6 @@
 import 'package:buzzride/Models/Password.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
-import 'package:buzzride/Views/Auth/codeAuth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,10 +18,7 @@ class Password extends StatefulWidget {
 class _Password extends State<Password> {
   bool isSwahili = false, obscure = true, page = false, checking = false;
   TextEditingController username = TextEditingController(),
-      prefixPhoneNumber = TextEditingController(),
-      suffixPhoneNumber = TextEditingController(),
       password = TextEditingController();
-
   String status = '', usern = '';
 
   SpinKitFadingFour spinkit = const SpinKitFadingFour(
@@ -94,19 +90,16 @@ class _Password extends State<Password> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: OColors.buttonColor,
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: Icon(Icons.keyboard_arrow_left, color: OColors.white),
-              ),
+            Container(
+              padding: const EdgeInsets.only(left: 0, top: 10, bottom: 10),
+              child: Icon(Icons.keyboard_arrow_left, color: OColors.primary),
             ),
+            Text(OLocale(isSwahili, 27).get(),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: OColors.primary))
           ],
         ),
       ),
@@ -120,99 +113,61 @@ class _Password extends State<Password> {
       width: MediaQuery.of(context).size.width / 1.2,
       height: MediaQuery.of(context).size.height / 1.27,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            OLocale(isSwahili, 33).get(),
+            OLocale(isSwahili, 0).get(),
             style: TextStyle(
-              fontSize: 18,
-              color: OColors.whiteFade,
-            ),
+                fontSize: 24,
+                color: OColors.primary,
+                fontWeight: FontWeight.bold),
           ), //logo
           const SizedBox(
-            height: 10,
+            height: 60,
           ),
-
-          //TextField: phone Number
-          Row(
-            children: [
-              SizedBox(
-                width: 50,
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                        hintText: "+255",
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(color: Colors.white)),
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: Theme(
+              data: ThemeData(primaryColor: OColors.introColor),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                controller: username,
+                style: TextStyle(color: Colors.black.withOpacity(.5)),
+                decoration: InputDecoration(
+                    hintText: "Username/Email",
+                    focusColor: OColors.primary,
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: OColors.primary.withOpacity(.5)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black.withOpacity(.3)),
+                    ),
+                    hintStyle: TextStyle(color: Colors.black.withOpacity(.5))),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: 200,
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: suffixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                        hintText: "Phone Number",
-                        focusColor: OColors.white,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: OColors.white.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: TextStyle(color: Colors.white)),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ), //
-
-          const Spacer(),
-
+          const SizedBox(
+            height: 60,
+          ),
           InkWell(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.only(
+                  top: 20, bottom: 20, left: 20, right: 20),
               decoration: BoxDecoration(
-                  color: OColors.buttonColor,
+                  color: OColors.primary,
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
               child: !checking
                   ? Text(
-                      OLocale(isSwahili, 34).get(),
+                      OLocale(isSwahili, 31).get(),
                       textAlign: TextAlign.center,
                       style: TextStyle(color: OColors.white, fontSize: 16),
                     )
                   : spinkit,
             ),
-            // onTap: () => _checkUser(),
-            onTap: () => const CodeAuth(),
+            onTap: () => _checkUser(),
           ) ////
-          ,
-
-          const SizedBox(
-            height: 40,
-          ),
         ],
       ),
     );
@@ -273,7 +228,6 @@ class _Password extends State<Password> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: const Color(0xff00AFCA),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverList(
@@ -286,23 +240,11 @@ class _Password extends State<Password> {
                     !page
                         ? _checkUserPage()
                         : _thankyouPage(user: "$usern"), //login button
-
-                    // top header
                     Positioned(
+                      child: _backButton(),
                       top: 30,
                       left: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _backButton(),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 2,
-                          ),
-                          headerLogo()
-                        ],
-                      ),
                     ), //back button
-
                     Positioned(
                       bottom: 0,
                       child: Row(
@@ -335,17 +277,6 @@ class _Password extends State<Password> {
             ]),
           )
         ],
-      ),
-    );
-  }
-
-  Padding headerLogo() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 8.0, left: 15),
-      child: Image(
-        image: AssetImage("assets/images/logo.png"),
-        width: 50,
-        height: 50,
       ),
     );
   }

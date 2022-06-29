@@ -1,11 +1,10 @@
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -15,8 +14,6 @@ class MyHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -73,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ));
 
       menus.add(Spacer());
+
       menus.add(DefaultTextStyle(
         style: TextStyle(
           fontSize: 12,
@@ -200,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text(widget.title),
+            title: Text('ne'),
             leading: _menuButton(context),
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -235,6 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+
           floatingActionButton: FloatingActionButton(
             onPressed: _incrementCounter,
             tooltip: 'Increment',

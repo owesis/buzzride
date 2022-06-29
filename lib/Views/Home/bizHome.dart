@@ -107,10 +107,6 @@ class _BizHomeState extends State<BizHome> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
           child: Row(
             children: [
-              const SizedBox(
-                height: 2.0,
-              ),
-
               // Icons Widgets Column
               iconInfo(),
 
@@ -129,7 +125,7 @@ class _BizHomeState extends State<BizHome> {
                             )
                           : const SizedBox(),
                       SizedBox(
-                        height: 2,
+                        height: 1,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

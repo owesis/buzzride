@@ -33,11 +33,8 @@ class LoginState extends State<Login> {
     _preferences.init();
     _preferences.isLoggedIn().then((isLoggedIn) {
       if (isLoggedIn) {
-        SchedulerBinding.instance.addPostFrameCallback((_) => pagerRemove(
-            context,
-            MyHomePage(
-              title: '',
-            )));
+        SchedulerBinding.instance
+            .addPostFrameCallback((_) => pagerRemove(context, MyHomePage()));
       }
     });
 
@@ -83,9 +80,7 @@ class LoginState extends State<Login> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => MyHomePage(
-                        title: '',
-                      )),
+                  builder: (BuildContext context) => MyHomePage()),
               ModalRoute.withName('/'));
         });
       } else {
@@ -439,9 +434,8 @@ class LoginState extends State<Login> {
                         ),
                         onTap: () => Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (BuildContext context) => MyHomePage(
-                                      title: '',
-                                    )),
+                                builder: (BuildContext context) =>
+                                    MyHomePage()),
                             ModalRoute.withName('/')),
                       ),
                     )

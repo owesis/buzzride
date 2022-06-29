@@ -41,11 +41,8 @@ class AuthIntroState extends State<AuthIntro>
     prefs.init();
     prefs.isLoggedIn().then((isLoggedIn) {
       if (isLoggedIn) {
-        SchedulerBinding.instance.addPostFrameCallback((_) => pagerRemove(
-            context,
-            MyHomePage(
-              title: '',
-            )));
+        SchedulerBinding.instance
+            .addPostFrameCallback((_) => pagerRemove(context, MyHomePage()));
       }
     });
 
