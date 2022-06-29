@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
             : Icon(
                 Icons.cancel,
                 size: 32,
-                color: OColors.white,
+                color: OColors.buttonColor,
               ),
         onTap: () {
           _drawerController.showDrawer();
