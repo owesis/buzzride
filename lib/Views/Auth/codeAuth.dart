@@ -1,9 +1,8 @@
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
+import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../Home/bizHome.dart';
 
 class CodeAuth extends StatefulWidget {
   const CodeAuth({Key? key}) : super(key: key);
@@ -247,7 +246,7 @@ class _CodeAuthState extends State<CodeAuth> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => const BizHome()));
+                        builder: (BuildContext context) => const MyHomePage()));
               },
             ) ////
             ,
