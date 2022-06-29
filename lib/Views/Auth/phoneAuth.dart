@@ -1,7 +1,3 @@
-// ignore: file_names
-// ignore_for_file: file_names
-
-import 'package:buzzride/Models/Password.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Views/Auth/codeAuth.dart';
@@ -33,56 +29,6 @@ class _PhoneNumberState extends State<PhoneNumber> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  }
-
-  _checkUser() async {
-    usern = username.text;
-    setState(() {
-      usern = usern;
-    });
-
-    if (usern.isEmpty && usern.length < 3) {
-      return ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Please enter your username/email!",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-
-    setState(() {
-      checking = true;
-    });
-
-    return PasswordModel(username: usern, payload: '', status: 0)
-        .passwordRequest()
-        .then((value) {
-      String message = value.payload;
-      if (value.status == 200) {
-        setState(() {
-          if (!page) {
-            page = true;
-          } else {
-            page = false;
-          }
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    });
   }
 
   Widget _backButton() {
