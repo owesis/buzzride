@@ -21,28 +21,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   TextEditingController lct = TextEditingController();
-  String location = '', goo = 'two';
+  String location = '';
 
   late final _drawerController;
 
-  bool isVisibleDrawer = true;
+  bool isVisibleDrawer = true, paged = false;
 
   List<Widget> menus = [];
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-      _counter = _counter * 12;
-    });
-  }
 
   @override
   void initState() {
@@ -131,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
   go() {
     if (lct.text.isNotEmpty) {
       setState(() {
-        goo = 'one';
+        paged = true;
       });
     }
   }
@@ -145,36 +131,42 @@ class _MyHomePageState extends State<MyHomePage> {
     return SizedBox(
       child: InkWell(
         child: isVisibleDrawer
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 5,
-                    margin: EdgeInsets.only(top: 15, left: 10),
-                    width: 33,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: OColors.buttonColor,
-                    ),
-                  ),
-                  Container(
-                    height: 5,
-                    margin: EdgeInsets.only(top: 7, left: 10),
-                    width: 25,
-                    decoration: BoxDecoration(
+            ? Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.only(left: 15),
+                decoration: BoxDecoration(
+                    color: OColors.primary,
+                    borderRadius: BorderRadius.all(Radius.circular(100))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 3,
+                      width: 20,
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: OColors.buttonColor),
-                  ),
-                  Container(
-                    height: 5,
-                    margin: EdgeInsets.only(top: 7, left: 10),
-                    width: 33,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: OColors.buttonColor,
+                        color: OColors.white,
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      height: 3,
+                      margin: EdgeInsets.only(top: 7),
+                      width: 30,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: OColors.white),
+                    ),
+                    Container(
+                      height: 3,
+                      margin: EdgeInsets.only(top: 7),
+                      width: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: OColors.white,
+                      ),
+                    ),
+                  ],
+                ),
               )
             : Icon(
                 Icons.cancel,
@@ -208,26 +200,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Drawerer(
-        child: Stack(children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/bizzmap.png'),
-                fit: BoxFit.fill,
-                // colorFilter:
-                //     const ColorFilter.mode(Colors.black54, BlendMode.darken),
-              ),
-            ),
-          ),
-          goo != 'one' ? postion1 : postion2
-        ]),
         backdropColor: OColors.whiteFade,
         controller: _drawerController,
         drawer: SafeArea(
@@ -247,6 +221,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+          ),
+        ),
+        child: Scaffold(
+          body: SafeArea(
+            child: Stack(alignment: Alignment.center, children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bizzmap.png'),
+                    fit: BoxFit.fill,
+                    // colorFilter:
+                    //     const ColorFilter.mode(Colors.black54, BlendMode.darken),
+                  ),
+                ),
+              ),
+              !paged ? postion1 : postion2,
+              Positioned(
+                  top: 10,
+                  left: 0,
+                  child: Container(
+                    child: _menuButton(context),
+                  )),
+            ]),
           ),
         ));
   }
@@ -283,22 +280,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget get postion1 => Positioned(
-      left: 15,
-      right: 15,
-      bottom: 15,
+      bottom: 20,
       child: Container(
-        height: location.isEmpty ? 115.0 : 158,
-        decoration: const BoxDecoration(
-            color: Color(0xff0099cc),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25.0),
-              topRight: Radius.circular(25.0),
-              bottomLeft: Radius.circular(25.0),
-              bottomRight: Radius.circular(25.0),
-            ),
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width / 1.2,
+        decoration: BoxDecoration(
+            color: OColors.primary,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black,
+                  color: Colors.black.withOpacity(.3),
                   blurRadius: 16.0,
                   spreadRadius: 0.5,
                   offset: Offset(0.7, 0.7))
@@ -337,25 +328,29 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white70,
                                       fontSize: 14))
                               : SizedBox(),
-                          RichText(
-                              textAlign: TextAlign.start,
-                              text: const TextSpan(children: [
-                                TextSpan(
-                                    text: 'From : ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12.0,
-                                        color: Colors.white)),
-                                TextSpan(
-                                    text: ' Posta-Shaban Robart str',
-                                    style: TextStyle(
-                                        fontSize: 13.0, color: Colors.white)),
-                              ])),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                            child: RichText(
+                                textAlign: TextAlign.start,
+                                text: const TextSpan(children: [
+                                  TextSpan(
+                                      text: 'From : ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 12.0,
+                                          color: Colors.white)),
+                                  TextSpan(
+                                      text: ' Posta-Shaban Robart str',
+                                      style: TextStyle(
+                                          fontSize: 13.0, color: Colors.white)),
+                                ])),
+                          ),
                         ],
                       ),
 
-                      // Divider line
-                      location.isNotEmpty ? divDier : const SizedBox(),
+                      Divider(
+                        color: OColors.borderColor.withOpacity(.5),
+                      ),
 
                       // Drop off inf0
                       location.isEmpty
@@ -364,24 +359,31 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: [
                                 //Search box
                                 SizedBox(
-                                  height: 40,
                                   width: 180,
                                   // decoration: BoxDecoration(
                                   //   // color: Colors.grey[500]!.withOpacity(0.5),
                                   //   // borderRadius: BorderRadius.circular(8),
                                   // ),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4.0),
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 4.0),
                                       child: TextField(
                                         controller: lct,
-                                        decoration: const InputDecoration(
-                                          hintText: 'Where to?',
-                                          hintStyle: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 19),
-                                        ),
+                                        decoration: InputDecoration(
+                                            hintText: 'Where to?',
+                                            hintStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 19),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: OColors.white
+                                                      .withOpacity(1)),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white
+                                                      .withOpacity(.5)),
+                                            )),
                                         // obscureText: true,
                                         style: const TextStyle(
                                             color: Colors.white,
@@ -389,15 +391,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                             fontSize: 19),
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.search,
-
                                         onChanged: (value) {
                                           setState(() {
                                             //_email = value;
                                           });
                                         },
-                                      ),
-                                    ),
-                                  ),
+                                      )),
                                 ),
 
                                 // Search Icon
@@ -408,7 +407,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Container(
                                     margin: EdgeInsets.only(top: 16.0),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xfffdc50c),
+                                      color: OColors.buttonColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     // ignore: deprecated_member_use
@@ -439,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    Text(location + ' ?',
+                                    Text(location,
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -448,7 +447,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
 
                                 // Search Icon
-
                                 GestureDetector(
                                   onTap: () {
                                     go();
@@ -456,11 +454,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Container(
                                     margin: const EdgeInsets.only(top: 16.0),
                                     decoration: BoxDecoration(
-                                        color: const Color(0xfffdc50c),
+                                        color: OColors.buttonColor,
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                              color: Colors.black,
+                                              color:
+                                                  Colors.black.withOpacity(.4),
                                               blurRadius: 3.0,
                                               spreadRadius: 0.2,
                                               offset: Offset(0.3, 0.3))
@@ -488,77 +487,79 @@ class _MyHomePageState extends State<MyHomePage> {
       ));
 
   Widget get postion2 => Positioned(
-      left: 15,
-      right: 15,
       bottom: 15,
-      child: Column(
-        children: [
-          Container(
-            height: 450.0,
-            decoration: const BoxDecoration(
-                color: Color(0xff0099cc),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25.0),
-                  topRight: Radius.circular(25.0),
-                  bottomLeft: Radius.circular(25.0),
-                  bottomRight: Radius.circular(25.0),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 16.0,
-                      spreadRadius: 0.5,
-                      offset: Offset(0.7, 0.7))
-                ]),
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
-              child: Column(
-                children: [
-                  transportInfo(),
-                  const SizedBox(
-                    height: 2.0,
-                  ),
-                  Column(
-                    children: [Text('data')],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: Container(
-              // height: 300,
-              width: 250,
+      child: Container(
+        width: MediaQuery.of(context).size.width / 1.1,
+        height: MediaQuery.of(context).size.height / 1.34,
+        child: Column(
+          children: [
+            Expanded(
+                child: Container(
+              height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
-                color: const Color(0xfffdc50c),
-                borderRadius: BorderRadius.circular(16),
+                  color: OColors.primary,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(.4),
+                        blurRadius: 16.0,
+                        spreadRadius: 0.5,
+                        offset: Offset(0.7, 0.7))
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 18.0),
+                child: ListView(
+                  children: [
+                    transportInfo(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'data',
+                      style: TextStyle(
+                          color: OColors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
-              // ignore: deprecated_member_use
-              child: FlatButton(
-                onPressed: () {
-                  // getLogin();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const MyHomePage()));
-                },
-                child: Text(
-                  'Send Request',
-                  style: TextStyle(fontSize: 22, color: Colors.white)
-                      .copyWith(fontWeight: FontWeight.bold),
+            )),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Container(
+                // height: 300,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: OColors.primary,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                // ignore: deprecated_member_use
+                child: FlatButton(
+                  onPressed: () {
+                    // getLogin();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const MyHomePage()));
+                  },
+                  child: Text(
+                    'Send Request',
+                    style: TextStyle(fontSize: 22, color: Colors.white)
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ));
 
-  Row transportInfo() {
+  Row transportInfo({buttoned = true}) {
     return Row(
       children: [
         // Icons Widgets Column
@@ -606,68 +607,49 @@ class _MyHomePageState extends State<MyHomePage> {
                         ])),
                   ],
                 ),
-                location.isNotEmpty ? divDier : const SizedBox(),
+                SizedBox(
+                  height: 3,
+                ),
+                location.isNotEmpty
+                    ? Divider(
+                        color: OColors.borderColor.withOpacity(.4),
+                      )
+                    : const SizedBox(),
                 location.isEmpty
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //Search box
                           SizedBox(
-                            height: 40,
-                            width: 180,
+                            width: MediaQuery.of(context).size.width,
                             // decoration: BoxDecoration(
                             //   // color: Colors.grey[500]!.withOpacity(0.5),
                             //   // borderRadius: BorderRadius.circular(8),
                             // ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
-                                child: TextField(
-                                  controller: lct,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Where to?',
-                                    hintStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 19),
-                                  ),
-                                  // obscureText: true,
-                                  style: const TextStyle(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 4.0),
+                              child: TextField(
+                                controller: lct,
+                                decoration: const InputDecoration(
+                                  hintText: 'Where to?',
+                                  hintStyle: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 19),
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.search,
-
-                                  onChanged: (value) {
-                                    setState(() {
-                                      //_email = value;
-                                    });
-                                  },
                                 ),
-                              ),
-                            ),
-                          ),
+                                // obscureText: true,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19),
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.search,
 
-                          // Search Icon
-                          GestureDetector(
-                            onTap: () {
-                              search();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 16.0),
-                              decoration: BoxDecoration(
-                                color: const Color(0xfffdc50c),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              // ignore: deprecated_member_use
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    //_email = value;
+                                  });
+                                },
                               ),
                             ),
                           ),
@@ -688,42 +670,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               SizedBox(
                                 height: 5,
                               ),
-                              Text(location + ' ?',
+                              Text(location,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18)),
                             ],
-                          ),
-
-                          // Search Icon
-
-                          GestureDetector(
-                            onTap: () {
-                              search();
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 16.0),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xfffdc50c),
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black,
-                                        blurRadius: 3.0,
-                                        spreadRadius: 0.2,
-                                        offset: Offset(0.3, 0.3))
-                                  ]),
-                              // ignore: deprecated_member_use
-                              child: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text('Go',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ),
                           ),
                         ],
                       ),
