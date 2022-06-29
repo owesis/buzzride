@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late final _drawerController;
 
-  bool isVisibleDrawer = false;
+  bool isVisibleDrawer = true;
 
   List<Widget> menus = [];
 
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 33,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(inputColor).withOpacity(.5),
+                      color: OColors.white,
                     ),
                   ),
                   Container(
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 25,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(inputColor).withOpacity(.5)),
+                        color: OColors.white),
                   ),
                   Container(
                     height: 5,
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 33,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(inputColor).withOpacity(.5),
+                      color: OColors.white,
                     ),
                   ),
                 ],
@@ -161,17 +161,24 @@ class _MyHomePageState extends State<MyHomePage> {
             : Icon(
                 Icons.cancel,
                 size: 32,
-                color: OColors.primary,
+                color: OColors.white,
               ),
         onTap: () {
           _drawerController.showDrawer();
+          setState(() {
+            if (_drawerController.value.visible) {
+              isVisibleDrawer = false;
+            } else {
+              isVisibleDrawer = true;
+            }
+          });
 
           _drawerController.addListener(() {
             setState(() {
-              if (!_drawerController.value.visible) {
-                isVisibleDrawer = true;
-              } else {
+              if (_drawerController.value.visible) {
                 isVisibleDrawer = false;
+              } else {
+                isVisibleDrawer = true;
               }
             });
           });
