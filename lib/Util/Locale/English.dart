@@ -42,7 +42,8 @@ class English {
     "Accept & Continue",
     "A code has been sent to",
     "Next",
-    "Phone Number"
+    "Phone Number",
+    "+255"
   ];
 
   words() {

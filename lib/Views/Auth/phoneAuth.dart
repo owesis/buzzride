@@ -144,7 +144,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
                     controller: prefixPhoneNumber,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                        hintText: "+255",
+                        hintText: OLocale(isSwahili, 38).get(),
                         focusColor: OColors.primary,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
