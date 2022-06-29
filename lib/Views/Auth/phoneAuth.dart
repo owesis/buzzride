@@ -60,111 +60,120 @@ class _PhoneNumberState extends State<PhoneNumber> {
 
   Widget _checkUserPage() {
     return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(top: 140),
+      alignment: Alignment.bottomCenter,
       width: MediaQuery.of(context).size.width / 1.2,
-      height: MediaQuery.of(context).size.height / 1.27,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            OLocale(isSwahili, 33).get(),
-            style: TextStyle(
-              fontSize: 18,
-              color: OColors.whiteFade,
-            ),
-          ), //logo
-          const SizedBox(
-            height: 10,
-          ),
-
-          //TextField: phone Number
-          Row(
-            children: [
-              SizedBox(
-                width: 50,
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                        hintText: OLocale(isSwahili, 38).get(),
-                        focusColor: OColors.primary,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: OColors.primary.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: const TextStyle(color: Colors.white)),
-                  ),
+      height: MediaQuery.of(context).size.height / 1.32,
+      child: Container(
+        width: 400,
+        height: 230,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                OLocale(isSwahili, 33).get(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: OColors.whiteFade,
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: 200,
-                child: Theme(
-                  data: ThemeData(primaryColor: OColors.introColor),
-                  child: TextField(
-                    controller: suffixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      hintText: OLocale(isSwahili, 37).get(),
-                      focusColor: OColors.white,
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: OColors.white.withOpacity(.5)),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.black.withOpacity(.3)),
-                      ),
-                      hintStyle: TextStyle(color: Colors.white),
+            ), //logo
+            const SizedBox(
+              height: 10,
+            ),
+
+            //TextField: phone Number
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      controller: prefixPhoneNumber,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                          hintText: OLocale(isSwahili, 38).get(),
+                          focusColor: OColors.primary,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: OColors.primary.withOpacity(.5)),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.black12.withOpacity(.3)),
+                          ),
+                          hintStyle: const TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 2,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.3 - 40,
+                  child: Theme(
+                    data: ThemeData(primaryColor: OColors.introColor),
+                    child: TextField(
+                      controller: suffixPhoneNumber,
+                      style: const TextStyle(color: Colors.white),
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        hintText: OLocale(isSwahili, 37).get(),
+                        focusColor: OColors.white,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: OColors.buttonColor.withOpacity(.5)),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black12.withOpacity(.3)),
+                        ),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ), //
+
+            const Spacer(),
+
+            InkWell(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: OColors.buttonColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
+                child: !checking
+                    ? Text(
+                        OLocale(isSwahili, 34).get(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: OColors.white, fontSize: 16),
+                      )
+                    : spinkit,
               ),
-            ],
-          ), //
-
-          const Spacer(),
-
-          InkWell(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  color: OColors.buttonColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: !checking
-                  ? Text(
-                      OLocale(isSwahili, 34).get(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: OColors.white, fontSize: 16),
-                    )
-                  : spinkit,
+              // onTap: () => _checkUser(),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const CodeAuth()));
+              },
             ),
-            // onTap: () => _checkUser(),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const CodeAuth()));
-            },
-          ) ////
-          ,
 
-          const SizedBox(
-            height: 40,
-          ),
-        ],
+            const SizedBox(
+              height: 40,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -253,33 +262,6 @@ class _PhoneNumberState extends State<PhoneNumber> {
                         ],
                       ),
                     ), //back button
-
-                    Positioned(
-                      bottom: 0,
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            width: 70,
-                            height: 4,
-                            color: page
-                                ? OColors.primary.withOpacity(.2)
-                                : OColors.primary,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            width: 70,
-                            height: 4,
-                            color: !page
-                                ? OColors.primary.withOpacity(.2)
-                                : OColors.primary,
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               )
