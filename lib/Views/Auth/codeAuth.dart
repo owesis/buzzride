@@ -4,19 +4,19 @@
 import 'package:buzzride/Models/Password.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
-import 'package:buzzride/Views/Auth/codeAuth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Password extends StatefulWidget {
-  Password({Key? key}) : super(key: key);
+import '../Home/bizHome.dart';
+
+class CodeAuth extends StatefulWidget {
+  const CodeAuth({Key? key}) : super(key: key);
 
   @override
-  _Password createState() => _Password();
+  State<CodeAuth> createState() => _CodeAuthState();
 }
 
-class _Password extends State<Password> {
+class _CodeAuthState extends State<CodeAuth> {
   bool isSwahili = false, obscure = true, page = false, checking = false;
   TextEditingController username = TextEditingController(),
       prefixPhoneNumber = TextEditingController(),
@@ -123,29 +123,45 @@ class _Password extends State<Password> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            OLocale(isSwahili, 33).get(),
+            OLocale(isSwahili, 35).get(),
             style: TextStyle(
               fontSize: 18,
               color: OColors.whiteFade,
             ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            '255 752824434',
+            style: TextStyle(
+              color: OColors.whiteFade,
+            ),
           ), //logo
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
 
           //TextField: phone Number
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(
+              Container(
+                height: 60,
                 width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[500]!.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Theme(
                   data: ThemeData(primaryColor: OColors.introColor),
                   child: TextField(
                     keyboardType: TextInputType.text,
-                    controller: prefixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
+                    // controller: prefixPhoneNumber,
+                    style: const TextStyle(color: Colors.white, fontSize: 25),
                     decoration: InputDecoration(
-                        hintText: "+255",
+                        contentPadding: const EdgeInsets.all(15),
+                        hintText: "2",
                         focusColor: OColors.primary,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -155,33 +171,106 @@ class _Password extends State<Password> {
                           borderSide:
                               BorderSide(color: Colors.black.withOpacity(.3)),
                         ),
-                        hintStyle: const TextStyle(color: Colors.white)),
+                        hintStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        )),
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: 200,
+              Container(
+                height: 55,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[500]!.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Theme(
                   data: ThemeData(primaryColor: OColors.introColor),
                   child: TextField(
                     keyboardType: TextInputType.text,
-                    controller: suffixPhoneNumber,
-                    style: const TextStyle(color: Colors.white),
+                    // controller: prefixPhoneNumber,
+                    style: const TextStyle(color: Colors.white, fontSize: 25),
                     decoration: InputDecoration(
-                        hintText: "Phone Number",
-                        focusColor: OColors.white,
+                        contentPadding: const EdgeInsets.all(15),
+                        hintText: "2",
+                        focusColor: OColors.primary,
                         focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: OColors.white.withOpacity(.5)),
+                          borderSide: BorderSide(
+                              color: OColors.primary.withOpacity(.5)),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black.withOpacity(.3)),
                         ),
-                        hintStyle: TextStyle(color: Colors.white)),
+                        hintStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        )),
+                  ),
+                ),
+              ),
+              Container(
+                height: 55,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[500]!.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Theme(
+                  data: ThemeData(primaryColor: OColors.introColor),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    // controller: prefixPhoneNumber,
+                    style: const TextStyle(color: Colors.white, fontSize: 25),
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        hintText: "2",
+                        focusColor: OColors.primary,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: OColors.primary.withOpacity(.5)),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black.withOpacity(.3)),
+                        ),
+                        hintStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        )),
+                  ),
+                ),
+              ),
+              Container(
+                height: 55,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[500]!.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Theme(
+                  data: ThemeData(primaryColor: OColors.introColor),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    // controller: prefixPhoneNumber,
+                    style: const TextStyle(color: Colors.white, fontSize: 25),
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        hintText: "2",
+                        focusColor: OColors.primary,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: OColors.primary.withOpacity(.5)),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black.withOpacity(.3)),
+                        ),
+                        hintStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        )),
                   ),
                 ),
               ),
@@ -199,14 +288,19 @@ class _Password extends State<Password> {
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
               child: !checking
                   ? Text(
-                      OLocale(isSwahili, 34).get(),
+                      OLocale(isSwahili, 36).get(),
                       textAlign: TextAlign.center,
                       style: TextStyle(color: OColors.white, fontSize: 16),
                     )
                   : spinkit,
             ),
             // onTap: () => _checkUser(),
-            onTap: () => const CodeAuth(),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const BizHome()));
+            },
           ) ////
           ,
 

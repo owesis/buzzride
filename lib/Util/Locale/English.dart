@@ -38,6 +38,10 @@ class English {
     "Back",
     "Submit",
     "Get Started",
+    "Enter your phone number",
+    "Accept & Continue",
+    "A code has been sent to",
+    "Next",
   ];
 
   words() {

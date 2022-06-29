@@ -5,10 +5,11 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/Preferences.dart';
 import 'package:buzzride/Util/Util.dart';
-import 'package:buzzride/Views/Auth/Login.dart';
 import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
+import 'phoneAuth.dart';
 
 class AuthIntro extends StatefulWidget {
   const AuthIntro({Key? key}) : super(key: key);
@@ -145,6 +146,8 @@ class AuthIntroState extends State<AuthIntro>
                           decoration: BoxDecoration(
                               color: OColors.introColor.withOpacity(.99))),
                     ),
+
+                    // Car image Transiion
                     PositionedTransition(
                       rect: relativeRectTween.animate(_controller),
                       child: Container(
@@ -158,6 +161,7 @@ class AuthIntroState extends State<AuthIntro>
                       ),
                     ),
 
+                    //Description
                     Positioned(
                       child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
@@ -167,13 +171,14 @@ class AuthIntroState extends State<AuthIntro>
                             textAlign: TextAlign.center,
                           ),
                           style: style,
-                          duration: Duration(milliseconds: 1000),
+                          duration: const Duration(milliseconds: 1000),
                         ),
                       ),
                       bottom: MediaQuery.of(context).size.height / 4.0,
                     ),
 
-                    Positioned(
+                    // Logo
+                    const Positioned(
                       top: 100,
                       left: 20,
                       child: Image(
@@ -181,6 +186,7 @@ class AuthIntroState extends State<AuthIntro>
                         width: 140,
                       ),
                     ),
+
                     Positioned(
                       bottom: MediaQuery.of(context).size.height * .10,
                       child: Center(
@@ -202,7 +208,8 @@ class AuthIntroState extends State<AuthIntro>
                           ),
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => Login())),
+                                  builder: (BuildContext context) =>
+                                      const PhoneNumber())),
                         ),
                       ),
                     ), //BUTTON

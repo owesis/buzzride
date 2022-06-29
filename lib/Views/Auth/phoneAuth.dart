@@ -5,18 +5,17 @@ import 'package:buzzride/Models/Password.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Views/Auth/codeAuth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Password extends StatefulWidget {
-  Password({Key? key}) : super(key: key);
+class PhoneNumber extends StatefulWidget {
+  const PhoneNumber({Key? key}) : super(key: key);
 
   @override
-  _Password createState() => _Password();
+  State<PhoneNumber> createState() => _PhoneNumberState();
 }
 
-class _Password extends State<Password> {
+class _PhoneNumberState extends State<PhoneNumber> {
   bool isSwahili = false, obscure = true, page = false, checking = false;
   TextEditingController username = TextEditingController(),
       prefixPhoneNumber = TextEditingController(),
@@ -206,7 +205,12 @@ class _Password extends State<Password> {
                   : spinkit,
             ),
             // onTap: () => _checkUser(),
-            onTap: () => const CodeAuth(),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const CodeAuth()));
+            },
           ) ////
           ,
 
