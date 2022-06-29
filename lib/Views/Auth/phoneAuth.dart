@@ -170,7 +170,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
                     controller: suffixPhoneNumber,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                        hintText: "Phone Number",
+                        hintText: OLocale(isSwahili, 37).get(),
                         focusColor: OColors.white,
                         focusedBorder: UnderlineInputBorder(
                           borderSide:
