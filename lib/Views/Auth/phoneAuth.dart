@@ -112,21 +112,22 @@ class _PhoneNumberState extends State<PhoneNumber> {
                 child: Theme(
                   data: ThemeData(primaryColor: OColors.introColor),
                   child: TextField(
-                    keyboardType: TextInputType.text,
                     controller: suffixPhoneNumber,
                     style: const TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                        hintText: OLocale(isSwahili, 37).get(),
-                        focusColor: OColors.white,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: OColors.white.withOpacity(.5)),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black.withOpacity(.3)),
-                        ),
-                        hintStyle: TextStyle(color: Colors.white)),
+                      hintText: OLocale(isSwahili, 37).get(),
+                      focusColor: OColors.white,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: OColors.white.withOpacity(.5)),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.black.withOpacity(.3)),
+                      ),
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
