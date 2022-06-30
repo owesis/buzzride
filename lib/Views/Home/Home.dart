@@ -53,24 +53,39 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void MenuCategories() {
+  void menuCategories() {
     setState(() {
       menus.add(Container(
-        height: 250,
-        padding: EdgeInsets.only(left: 20, right: 20),
+        // height: 250,   // Screen OverFlow 45 pixer
+        height: MediaQuery.of(context).size.height / 2.8,
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Spacer(),
-            Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-              ),
+            // const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 28,
+                      backgroundColor: Colors.white,
+                      child: Image(
+                        image: AssetImage('assets/images/user.png'),
+                      ),
+                    ),
+                  )),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 "Frank Galos",
                 style: TextStyle(
@@ -80,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 5, bottom: 20),
+              padding: const EdgeInsets.only(top: 5, bottom: 15),
               child: Text(
                 "+255 743 500 123",
                 style: TextStyle(
@@ -90,8 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )
           ],
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
         ),
       ));
 
@@ -138,8 +151,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               onTap: () => () {},
               leading: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
@@ -155,8 +168,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               onTap: () => () {},
               leading: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
                     color: Colors.blueAccent,
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Icon(Icons.settings, color: OColors.whiteFade),
@@ -171,22 +184,22 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ));
 
-      menus.add(Spacer());
+      menus.add(const Spacer());
 
       menus.add(DefaultTextStyle(
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           color: Colors.white54,
         ),
         child: Container(
           margin: const EdgeInsets.symmetric(
-            vertical: 16.0,
+            vertical: 5.0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(
@@ -199,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Icons.favorite,
                 color: Colors.white.withOpacity(.6),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               InkWell(
@@ -246,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget? _menuButton(BuildContext context) {
     setState(() {
       menus.clear();
-      MenuCategories();
+      menuCategories();
     });
 
     return SizedBox(
@@ -359,19 +372,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
               !paged ? postion1 : postion2,
 
-              !r ? SizedBox() : postion3,
+              !r ? const SizedBox() : postion3,
 
               // Drawer
-              MenuButton(context),
-
-              // logo
-              //logoOnMap(), // This logo may not be needed to rendered to the user
+              menuButton(context),
             ]),
           ),
         ));
   }
 
-  Positioned MenuButton(BuildContext context) {
+  Positioned menuButton(BuildContext context) {
     return Positioned(
         top: 25,
         left: 0,
@@ -553,14 +563,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     search();
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(top: 16.0),
+                                    margin: const EdgeInsets.only(top: 16.0),
                                     decoration: BoxDecoration(
                                       color: OColors.buttonColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     // ignore: deprecated_member_use
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(7.0),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(7.0),
                                       child: Icon(
                                         Icons.search,
                                         color: Colors.white,
@@ -571,19 +581,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ],
                             )
-                          : Row(
+                          :
+                          //Search box
+                          Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //Search box
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('DROP OFF',
+                                    const Text('DROP OFF',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white70,
                                             fontSize: 14)),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Text(location,
@@ -610,7 +621,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   Colors.black.withOpacity(.4),
                                               blurRadius: 3.0,
                                               spreadRadius: 0.2,
-                                              offset: Offset(0.3, 0.3))
+                                              offset: const Offset(0.3, 0.3))
                                         ]),
                                     // ignore: deprecated_member_use
                                     child: const Padding(
@@ -808,79 +819,105 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //Driver info
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('First Lastname',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12.0,
-                                    color: Colors.white)),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Text('Driver',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12.0,
-                                    color: Colors.white)),
-                            RichText(
-                                textAlign: TextAlign.start,
-                                text: const TextSpan(children: [
-                                  TextSpan(
-                                      text: 'Trips : ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12.0,
-                                          color: Colors.white)),
-                                  TextSpan(
-                                      text: ' 48',
-                                      style: TextStyle(
-                                          fontSize: 13.0, color: Colors.white)),
-                                ])),
-                          ],
-                        ),
-                      ),
 
-                      // Driver profile
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.white,
-                          child: Image(
-                            image: AssetImage('assets/images/user.png'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //Driver info
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('First Lastname',
+                                  style: driverProfile.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text('Driver', style: driverProfile),
+                              RichText(
+                                  textAlign: TextAlign.start,
+                                  text: const TextSpan(children: [
+                                    TextSpan(
+                                        text: 'Trips : ', style: driverProfile),
+                                    TextSpan(text: ' 48', style: driverProfile),
+                                  ])),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+
+                        // Driver profile
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: 28,
+                            backgroundColor: Colors.white,
+                            child: Image(
+                              image: AssetImage('assets/images/user.png'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
 
-                  // TO BE CONTINUE ... GoING TO WORK now ..........................
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                          width: 170, height: 120, child: transportInfo()),
-                      Column(
-                        children: [
-                          Text(
-                            'Distance 6.3 kms',
-                            style: driverProfile2,
-                          ),
-                          Text(
-                            'Cost 6,500/= Tsh',
-                            style: driverProfile2,
-                          ),
-                        ],
-                      )
-                    ],
+                  // Transport info & costs
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(width: 160, child: transportInfo()),
+                        Column(
+                          children: const [
+                            Text(
+                              'Distance 6.3 kms',
+                              style: driverProfile2,
+                            ),
+                            Text(
+                              'Cost 6,500/= Tsh',
+                              style: driverProfile2,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+
+                  // Note & costs row
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 150,
+                          child: RichText(
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.start,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: OLocale(isSwahili, 47).get(),
+                                    style: driverProfile),
+                                TextSpan(
+                                    text: OLocale(isSwahili, 48).get(),
+                                    style:
+                                        driverProfile.copyWith(fontSize: 11)),
+                              ])),
+                        ),
+                        const Text(
+                          'Cost 6,500/= Tsh',
+                          style: driverProfile2,
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -889,7 +926,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 10,
             ),
 
-            // Send Request Buttons
+            // Confirm Buttons
             Center(
               child: Container(
                 // height: 300,
@@ -909,7 +946,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 const MyHomePage()));
                   },
                   child: Text(
-                    'Confirm',
+                    '${OLocale(isSwahili, 49).get()} 7,700= Tsh',
                     style: buttonsText.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -958,19 +995,25 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(fontSize: 12.0, color: Colors.white),
                       )
                     : const SizedBox(),
+
                 const SizedBox(
                   height: 2,
                 ),
+
+                //PickUp & From
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Pick Up
                     location.isNotEmpty
                         ? const Text('PICK UP',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white70,
-                                fontSize: 14))
-                        : const SizedBox(),
+                                fontSize: 12))
+                        :
+                        // From: location address
+                        const SizedBox(),
                     RichText(
                         textAlign: TextAlign.start,
                         text: const TextSpan(children: [
@@ -978,28 +1021,34 @@ class _MyHomePageState extends State<MyHomePage> {
                               text: 'From : ',
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 12.0,
+                                  fontSize: 11.0,
                                   color: Colors.white)),
                           TextSpan(
                               text: ' Posta-Shaban Robart str',
                               style: TextStyle(
-                                  fontSize: 13.0, color: Colors.white)),
+                                  fontSize: 11.0, color: Colors.white)),
                         ])),
                   ],
                 ),
-                SizedBox(
+
+                const SizedBox(
                   height: 3,
                 ),
+
+                // Divider Line
                 location.isNotEmpty
                     ? Divider(
                         color: OColors.borderColor.withOpacity(.4),
                       )
                     : const SizedBox(),
+
+                // wherTo & DropOff
                 location.isEmpty
-                    ? Row(
+                    ?
+                    // Where to? ... (Search box TextField)
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //Search box
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
                             // decoration: BoxDecoration(
@@ -1015,13 +1064,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   hintStyle: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 19),
+                                      fontSize: 13),
                                 ),
                                 // obscureText: true,
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 19),
+                                    fontSize: 13),
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.search,
 
@@ -1035,7 +1084,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       )
-                    : Row(
+                    :
+                    // Drop Off
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //Search box
@@ -1044,17 +1095,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Text('DROP OFF',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w700,
                                       color: Colors.white70,
-                                      fontSize: 14)),
-                              SizedBox(
-                                height: 5,
-                              ),
+                                      fontSize: 13)),
                               Text(location,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
+                                      fontSize: 14)),
                             ],
                           ),
                         ],

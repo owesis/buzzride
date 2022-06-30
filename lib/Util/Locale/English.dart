@@ -52,6 +52,9 @@ class English {
     "Buzz family",
     "Buzz Carrier", // 45
     "Send Request",
+    "NOTE: ",
+    "Driver from more than 1km will charge exta cost of 1,000 tsh to reach you",
+    "Confirm"
   ];
 
   words() {

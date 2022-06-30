@@ -8,3 +8,4 @@ const TextStyle transportTypeHeader =
     TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold);
 const TextStyle driverProfile2 =
     TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w500);
+const TextStyle driverProfile = TextStyle(fontSize: 12.0, color: Colors.white);
