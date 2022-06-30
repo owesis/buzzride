@@ -2,6 +2,7 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../Util/Locale.dart';
@@ -31,7 +32,56 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isSwahili = false, isVisibleDrawer = true, paged = false, r = false;
 
-  List<Widget> menus = [];
+  List<Widget> menus = [
+    ListTile(
+      onTap: () => () {},
+      leading: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.blueAccent),
+        child: Icon(Icons.home_filled, color: OColors.whiteFade),
+      ),
+      title: Text(
+        "Home",
+        style: TextStyle(color: OColors.white, fontSize: 16),
+      ),
+    ),
+    ListTile(
+      onTap: () => () {},
+      leading: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.blueAccent),
+        child: Icon(Icons.history, color: OColors.whiteFade),
+      ),
+      title: Text(
+        "Travel History",
+        style: TextStyle(color: OColors.white, fontSize: 16),
+      ),
+    ),
+    ListTile(
+      onTap: () => () {},
+      leading: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.blueAccent),
+        child: Icon(Icons.notifications_outlined, color: OColors.whiteFade),
+      ),
+      title: Text(
+        "Notifications",
+        style: TextStyle(color: OColors.white, fontSize: 16),
+      ),
+    ),
+    ListTile(
+      onTap: () => () {},
+      leading: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.blueAccent),
+        child: Icon(Icons.settings, color: OColors.whiteFade),
+      ),
+      title: Text(
+        "Settings",
+        style: TextStyle(color: OColors.white, fontSize: 16),
+      ),
+    ),
+  ];
 
   @override
   void initState() {
@@ -49,15 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
         alignment: Alignment.bottomCenter,
         child: ListView.builder(
-          itemBuilder: (BuildContext context, index) => ListTile(
-            onTap: () => () {},
-            leading:
-                Icon(Icons.category, color: OColors.whiteFade.withOpacity(.6)),
-            title: Text(
-              "Home",
-              style: TextStyle(color: OColors.white, fontSize: 16),
-            ),
-          ),
+          itemBuilder: (BuildContext context, index) => menus[index],
           itemCount: 2,
         ),
       ));
