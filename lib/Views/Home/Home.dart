@@ -2,7 +2,6 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../Util/Locale.dart';
@@ -38,46 +37,10 @@ class _MyHomePageState extends State<MyHomePage> {
       leading: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(color: Colors.blueAccent),
-        child: Icon(Icons.home_filled, color: OColors.whiteFade),
+        child: Icon(Icons.category, color: OColors.whiteFade),
       ),
       title: Text(
         "Home",
-        style: TextStyle(color: OColors.white, fontSize: 16),
-      ),
-    ),
-    ListTile(
-      onTap: () => () {},
-      leading: Container(
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(color: Colors.blueAccent),
-        child: Icon(Icons.history, color: OColors.whiteFade),
-      ),
-      title: Text(
-        "Travel History",
-        style: TextStyle(color: OColors.white, fontSize: 16),
-      ),
-    ),
-    ListTile(
-      onTap: () => () {},
-      leading: Container(
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(color: Colors.blueAccent),
-        child: Icon(Icons.notifications_outlined, color: OColors.whiteFade),
-      ),
-      title: Text(
-        "Notifications",
-        style: TextStyle(color: OColors.white, fontSize: 16),
-      ),
-    ),
-    ListTile(
-      onTap: () => () {},
-      leading: Container(
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(color: Colors.blueAccent),
-        child: Icon(Icons.settings, color: OColors.whiteFade),
-      ),
-      title: Text(
-        "Settings",
         style: TextStyle(color: OColors.white, fontSize: 16),
       ),
     ),
@@ -98,9 +61,67 @@ class _MyHomePageState extends State<MyHomePage> {
         height: MediaQuery.of(context).size.height / 1.6,
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
         alignment: Alignment.bottomCenter,
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, index) => menus[index],
-          itemCount: 2,
+        child: ListView(
+          children: [
+            ListTile(
+              onTap: () => () {},
+              leading: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Icon(Icons.home_filled, color: OColors.whiteFade),
+              ),
+              title: Text(
+                "Home",
+                style: TextStyle(color: OColors.white, fontSize: 16),
+              ),
+            ),
+            ListTile(
+              onTap: () => () {},
+              leading: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Icon(Icons.history, color: OColors.whiteFade),
+              ),
+              title: Text(
+                "Travel History",
+                style: TextStyle(color: OColors.white, fontSize: 16),
+              ),
+            ),
+            ListTile(
+              onTap: () => () {},
+              leading: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Icon(Icons.notifications_outlined,
+                    color: OColors.whiteFade),
+              ),
+              title: Text(
+                "Notifications",
+                style: TextStyle(color: OColors.white, fontSize: 16),
+              ),
+            ),
+            ListTile(
+              onTap: () => () {},
+              leading: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Icon(Icons.settings, color: OColors.whiteFade),
+              ),
+              title: Text(
+                "Settings",
+                style: TextStyle(color: OColors.white, fontSize: 16),
+              ),
+            )
+          ],
         ),
       ));
 
