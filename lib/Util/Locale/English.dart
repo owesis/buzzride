@@ -40,11 +40,18 @@ class English {
     "Get Started",
     "Enter your phone number",
     "Accept & Continue",
-    "A code has been sent to",
+    "A code has been sent to", // No. 35
     "Next",
     "Phone Number",
     "+255",
-    "+255 7*****"
+    "+255 7*****",
+    "Choose Transport Type", // No. 40
+    "Buzz Bodaboda",
+    "Buzz economy",
+    "Buzz luxury",
+    "Buzz family",
+    "Buzz Carrier", // 45
+    "Send Request",
   ];
 
   words() {

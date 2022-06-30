@@ -4,6 +4,9 @@ import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
 import 'package:flutter/material.dart';
 
+import '../../Util/Locale.dart';
+import '../../Util/pallets.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -26,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late final _drawerController;
 
-  bool isVisibleDrawer = true, paged = false;
+  bool isSwahili = false, isVisibleDrawer = true, paged = false, r = false;
 
   List<Widget> menus = [];
 
@@ -122,6 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  send() {
+    if (lct.text.isNotEmpty) {
+      setState(() {
+        paged = false;
+        r = true;
+      });
+    }
+  }
+
   Widget? _menuButton(BuildContext context) {
     setState(() {
       menus.clear();
@@ -142,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                       height: 3,
-                      width: 20,
+                      width: 10,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: OColors.white,
@@ -150,16 +162,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Container(
                       height: 3,
-                      margin: EdgeInsets.only(top: 7),
-                      width: 30,
+                      margin: const EdgeInsets.only(top: 3),
+                      width: 20,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: OColors.white),
                     ),
                     Container(
                       height: 3,
-                      margin: EdgeInsets.only(top: 7),
-                      width: 20,
+                      margin: EdgeInsets.only(top: 4),
+                      width: 10,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: OColors.white,
@@ -199,8 +211,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Drawerer(
         backdropColor: OColors.whiteFade,
         controller: _drawerController,
@@ -226,6 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
+              // Map
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -236,14 +247,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+
               !paged ? postion1 : postion2,
-              Positioned(
-                  top: 10,
-                  left: 0,
-                  child: Container(
-                    child: _menuButton(context),
-                  )),
+
+              !r ? SizedBox() : postion3,
+
+              // Drawer
+              !paged ? homDrawer(context) : const SizedBox(),
+
+              // logo
+              !paged ? logoOnMap() : const SizedBox(),
             ]),
+          ),
+        ));
+  }
+
+  Positioned homDrawer(BuildContext context) {
+    return Positioned(
+        top: 10,
+        left: 0,
+        child: Container(
+          child: _menuButton(context),
+        ));
+  }
+
+  Positioned logoOnMap() {
+    return Positioned(
+        top: 10,
+        right: 0,
+        child: Padding(
+          padding: EdgeInsets.only(top: 8.0, right: 15),
+          child: Image(
+            image: AssetImage("assets/images/logo.png"),
+            width: 50,
+            height: 50,
           ),
         ));
   }
@@ -286,13 +323,13 @@ class _MyHomePageState extends State<MyHomePage> {
         width: MediaQuery.of(context).size.width / 1.2,
         decoration: BoxDecoration(
             color: OColors.primary,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
             boxShadow: [
               BoxShadow(
                   color: Colors.black.withOpacity(.3),
                   blurRadius: 16.0,
                   spreadRadius: 0.5,
-                  offset: Offset(0.7, 0.7))
+                  offset: const Offset(0.7, 0.7))
             ]),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
@@ -315,21 +352,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontSize: 12.0, color: Colors.white),
                             )
                           : const SizedBox(),
-                      SizedBox(
-                        height: 1,
-                      ),
+
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           location.isNotEmpty
-                              ? Text('PICK UP',
+                              ? const Text('PICK UP',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white70,
                                       fontSize: 14))
-                              : SizedBox(),
+                              : const SizedBox(),
                           Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                            padding: const EdgeInsets.only(top: 5, bottom: 5),
                             child: RichText(
                                 textAlign: TextAlign.start,
                                 text: const TextSpan(children: [
@@ -348,9 +383,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
 
-                      Divider(
-                        color: OColors.borderColor.withOpacity(.5),
-                      ),
+                      location.isNotEmpty
+                          ? Divider(
+                              color: OColors.borderColor.withOpacity(.5),
+                            )
+                          : const SizedBox(
+                              height: 2,
+                            ),
 
                       // Drop off inf0
                       location.isEmpty
@@ -359,13 +398,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: [
                                 //Search box
                                 SizedBox(
-                                  width: 180,
+                                  width: 175,
                                   // decoration: BoxDecoration(
                                   //   // color: Colors.grey[500]!.withOpacity(0.5),
                                   //   // borderRadius: BorderRadius.circular(8),
                                   // ),
                                   child: Container(
-                                      padding: EdgeInsets.only(left: 4.0),
+                                      padding: const EdgeInsets.only(left: 4.0),
                                       child: TextField(
                                         controller: lct,
                                         decoration: InputDecoration(
@@ -412,7 +451,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     // ignore: deprecated_member_use
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(7.0),
                                       child: Icon(
                                         Icons.search,
                                         color: Colors.white,
@@ -488,9 +527,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget get postion2 => Positioned(
       bottom: 15,
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width / 1.1,
-        height: MediaQuery.of(context).size.height / 1.34,
+        height: MediaQuery.of(context).size.height / 1.14,
         child: Column(
           children: [
             Expanded(
@@ -498,43 +537,256 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                   color: OColors.primary,
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black.withOpacity(.4),
                         blurRadius: 16.0,
                         spreadRadius: 0.5,
-                        offset: Offset(0.7, 0.7))
+                        offset: const Offset(0.7, 0.7))
                   ]),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 18.0),
-                child: ListView(
-                  children: [
-                    transportInfo(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'data',
+              child: ListView(
+                children: [
+                  // Top Transport Info
+                  Container(
+                      decoration: BoxDecoration(
+                          color: OColors.primary,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(25)),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(.4),
+                                blurRadius: 16.0,
+                                spreadRadius: 0.5,
+                                offset: const Offset(0.7, 0.7))
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 18.0,
+                          right: 18.0,
+                          bottom: 6,
+                          top: 4,
+                        ),
+                        child: transportInfo(),
+                      )),
+
+                  const SizedBox(
+                    height: 30,
+                  ),
+
+                  // Transport Type header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 28.0, vertical: 8),
+                    child: Text(
+                      OLocale(isSwahili, 40).get(),
                       style: TextStyle(
                           color: OColors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+
+                  //Transport Type View
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 10.0),
+                          child: transportTypeInfo(OLocale(isSwahili, 41).get(),
+                              'assets/images/logo.png'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 10.0),
+                          child: transportTypeInfo(OLocale(isSwahili, 42).get(),
+                              'assets/images/logo.png'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 10.0),
+                          child: transportTypeInfo(OLocale(isSwahili, 43).get(),
+                              'assets/images/logo.png'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 10.0),
+                          child: transportTypeInfo(OLocale(isSwahili, 43).get(),
+                              'assets/images/logo.png'),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             )),
-            SizedBox(
+
+            const SizedBox(
               height: 20,
             ),
+
+            // Send Request Buttons
             Center(
               child: Container(
                 // height: 300,
                 width: 250,
                 decoration: BoxDecoration(
+                  color: OColors.buttonColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                // ignore: deprecated_member_use
+                child: FlatButton(
+                  onPressed: () {
+                    send();
+                  },
+                  child: Text(
+                    OLocale(isSwahili, 46).get(),
+                    style: buttonsText.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ));
+
+  Widget get postion3 => Positioned(
+      bottom: 15,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 1.1,
+        height: MediaQuery.of(context).size.height / 1.2,
+        child: Column(
+          children: [
+            Expanded(
+                child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
                   color: OColors.primary,
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(.4),
+                        blurRadius: 16.0,
+                        spreadRadius: 0.5,
+                        offset: const Offset(0.7, 0.7))
+                  ]),
+              child: ListView(
+                children: [
+                  // Top Transport Info
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${OLocale(isSwahili, 41).get()} information',
+                        style: transportTypeHeader,
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 100,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/bizzmap.png'),
+                          fit: BoxFit.fill,
+
+                          // colorFilter:
+                          //     const ColorFilter.mode(Colors.black54, BlendMode.darken),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //Driver info
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('First Lastname',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12.0,
+                                    color: Colors.white)),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text('Driver',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12.0,
+                                    color: Colors.white)),
+                            RichText(
+                                textAlign: TextAlign.start,
+                                text: const TextSpan(children: [
+                                  TextSpan(
+                                      text: 'Trips : ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 12.0,
+                                          color: Colors.white)),
+                                  TextSpan(
+                                      text: ' 48',
+                                      style: TextStyle(
+                                          fontSize: 13.0, color: Colors.white)),
+                                ])),
+                          ],
+                        ),
+                      ),
+
+                      // Driver profile
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 28,
+                          backgroundColor: Colors.white,
+                          child: Image(
+                            image: AssetImage('assets/images/user.png'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // TO BE CONTINUE ... GoING TO WORK now ..........................
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                          width: 170, height: 120, child: transportInfo()),
+                      Column(
+                        children: [
+                          Text(
+                            'Distance 6.3 kms',
+                            style: driverProfile2,
+                          ),
+                          Text(
+                            'Cost 6,500/= Tsh',
+                            style: driverProfile2,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )),
+            const SizedBox(
+              height: 10,
+            ),
+
+            // Send Request Buttons
+            Center(
+              child: Container(
+                // height: 300,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: OColors.buttonColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 // ignore: deprecated_member_use
@@ -548,9 +800,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 const MyHomePage()));
                   },
                   child: Text(
-                    'Send Request',
-                    style: TextStyle(fontSize: 22, color: Colors.white)
-                        .copyWith(fontWeight: FontWeight.bold),
+                    'Confirm',
+                    style: buttonsText.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -558,6 +809,26 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ));
+
+  Row transportTypeInfo(tType, image) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          tType,
+          style: transportType,
+        ),
+        Image(
+          image: AssetImage(
+            image,
+          ),
+          width: 50,
+          height: 40,
+        )
+      ],
+    );
+  }
 
   Row transportInfo({buttoned = true}) {
     return Row(
@@ -687,7 +958,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget get divDier => Column(children: [
+  Widget get divDier => Column(children: const [
         SizedBox(height: 25),
         DividerWidget(),
         SizedBox(height: 10),

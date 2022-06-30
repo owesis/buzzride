@@ -64,7 +64,7 @@ class _CodeAuthState extends State<CodeAuth> {
       margin: const EdgeInsets.only(top: 140),
       width: MediaQuery.of(context).size.width / 1.2,
       height: MediaQuery.of(context).size.height / 1.4,
-      child: Container(
+      child: SizedBox(
         height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
