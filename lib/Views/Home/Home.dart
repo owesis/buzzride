@@ -55,14 +55,56 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void MenuCategories() {
     setState(() {
-      menus.add(Spacer());
+      menus.add(Container(
+        height: 250,
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          children: [
+            Spacer(),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "Frank Galos",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: OColors.white.withOpacity(.9)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5, bottom: 20),
+              child: Text(
+                "+255 743 500 123",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: OColors.whiteFade.withOpacity(.6)),
+              ),
+            )
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+      ));
 
       menus.add(Container(
-        height: MediaQuery.of(context).size.height / 1.6,
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+        height: MediaQuery.of(context).size.height / 2,
         alignment: Alignment.bottomCenter,
         child: ListView(
           children: [
+            Container(
+              padding: EdgeInsets.all(1.4),
+              margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              color: OColors.borderColor.withOpacity(.1),
+            ),
             ListTile(
               onTap: () => () {},
               leading: Container(
@@ -76,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Home",
                 style: TextStyle(color: OColors.white, fontSize: 16),
               ),
+              contentPadding: EdgeInsets.only(bottom: 20, left: 20, right: 15),
             ),
             ListTile(
               onTap: () => () {},
@@ -90,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Travel History",
                 style: TextStyle(color: OColors.white, fontSize: 16),
               ),
+              contentPadding: EdgeInsets.only(bottom: 20, left: 20, right: 15),
             ),
             ListTile(
               onTap: () => () {},
@@ -106,6 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Notifications",
                 style: TextStyle(color: OColors.white, fontSize: 16),
               ),
+              contentPadding: EdgeInsets.only(bottom: 20, left: 20, right: 15),
             ),
             ListTile(
               onTap: () => () {},
@@ -120,6 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Settings",
                 style: TextStyle(color: OColors.white, fontSize: 16),
               ),
+              contentPadding: EdgeInsets.only(bottom: 20, left: 20, right: 15),
             )
           ],
         ),
