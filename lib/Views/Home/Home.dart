@@ -253,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
               !r ? SizedBox() : postion3,
 
               // Drawer
-              !paged ? homDrawer(context) : const SizedBox(),
+              MenuButton(context),
 
               // logo
               !paged ? logoOnMap() : const SizedBox(),
@@ -262,9 +262,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  Positioned homDrawer(BuildContext context) {
+  Positioned MenuButton(BuildContext context) {
     return Positioned(
-        top: 10,
+        top: 25,
         left: 0,
         child: Container(
           child: _menuButton(context),
