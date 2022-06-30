@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../Util/Locale.dart';
 import '../../Util/pallets.dart';
+import '../profile/profile.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController lct = TextEditingController();
   String location = '';
 
+  // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
 
   bool isSwahili = false, isVisibleDrawer = true, paged = false, r = false;
@@ -35,8 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ListTile(
       onTap: () => () {},
       leading: Container(
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(color: Colors.blueAccent),
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(color: Colors.blueAccent),
         child: Icon(Icons.category, color: OColors.whiteFade),
       ),
       title: Text(
@@ -64,26 +66,38 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 28,
-                      backgroundColor: Colors.white,
-                      child: Image(
-                        image: AssetImage('assets/images/user.png'),
-                      ),
+
+            // User Avater
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const Profile()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
                     ),
-                  )),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 28,
+                        backgroundColor: Colors.white,
+                        child: Image(
+                          image: AssetImage('assets/images/user.png'),
+                        ),
+                      ),
+                    )),
+              ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
@@ -94,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: OColors.white.withOpacity(.9)),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 5, bottom: 15),
               child: Text(

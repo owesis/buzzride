@@ -53,8 +53,9 @@ class English {
     "Buzz Carrier", // 45
     "Send Request",
     "NOTE: ",
-    "Driver from more than 1km will charge exta cost of 1,000 tsh to reach you",
-    "Confirm"
+    "Driver from more than 1km will charge extra cost of 1,000 tsh to reach you",
+    "Confirm",
+    "Driver Profile" // 50
   ];
 
   words() {
