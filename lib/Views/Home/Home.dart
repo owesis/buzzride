@@ -256,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
               MenuButton(context),
 
               // logo
-              !paged ? logoOnMap() : const SizedBox(),
+              //logoOnMap(), // This logo may not be needed to rendered to the user
             ]),
           ),
         ));
