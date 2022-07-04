@@ -33,7 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
 
-  bool isSwahili = false, isVisibleDrawer = true, paged = false, r = false;
+  bool isSwahili = false, isVisibleDrawer = true, r = false;
+  int paged = 0;
 
   List<Widget> menus = [
     ListTile(
@@ -259,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
   go() {
     if (lct.text.isNotEmpty) {
       setState(() {
-        paged = true;
+        paged = 1;
       });
     }
   }
@@ -267,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
   send() {
     if (lct.text.isNotEmpty) {
       setState(() {
-        paged = false;
+        paged = 2;
         r = true;
       });
     }
@@ -385,9 +386,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     newGoogleMapController = controller;
                   }),
 
-              !paged ? postion1 : postion2,
-
-              !r ? const SizedBox() : postion3,
+              if (paged == 0)
+                postion1
+              else if (paged == 1)
+                postion2
+              else
+                postion3,
 
               // Drawer
               menuButton(context),
