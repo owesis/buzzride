@@ -43,6 +43,9 @@ dependencies:
   intl:
   async:
   image_picker:
+  geolocator: 
+  google_maps_flutter:   
+  firebase_core: ^1.19.1
 
 
 dev_dependencies:

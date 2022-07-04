@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Util/Locale.dart';
 import '../../Util/pallets.dart';
@@ -11,15 +14,6 @@ import '../profile/profile.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -27,6 +21,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController lct = TextEditingController();
   String location = '';
+
+  final Completer<GoogleMapController> _controllerGoogleMap = Completer();
+  late GoogleMapController newGoogleMapController;
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
 
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
@@ -374,16 +376,14 @@ class _MyHomePageState extends State<MyHomePage> {
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
               // Map
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/bizzmap.png'),
-                    fit: BoxFit.fill,
-                    // colorFilter:
-                    //     const ColorFilter.mode(Colors.black54, BlendMode.darken),
-                  ),
-                ),
-              ),
+              GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationButtonEnabled: true,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controllerGoogleMap.complete(controller);
+                    newGoogleMapController = controller;
+                  }),
 
               !paged ? postion1 : postion2,
 
@@ -428,7 +428,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.green,
         ),
         location.isNotEmpty
-            ? Container(
+            ? const SizedBox(
                 height: 60,
                 child: VerticalDivider(
                   color: Colors.white54,
@@ -445,7 +445,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 size: 17,
                 color: Colors.green,
               )
-            : SizedBox(),
+            : const SizedBox(),
       ],
     );
   }

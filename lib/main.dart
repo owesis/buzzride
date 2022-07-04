@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: 'Poppins',
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             subtitle1: TextStyle(color: Color.fromRGBO(10, 10, 10, .6)),
             subtitle2: TextStyle(color: Color.fromRGBO(10, 10, 10, .6)),
             bodyText1: TextStyle(color: Color.fromRGBO(10, 10, 10, .6)),

@@ -1,8 +1,6 @@
 import 'package:buzzride/Util/Locale.dart';
 import 'package:buzzride/Util/pallets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../../Util/Colors.dart';
 import '../Home/Home.dart';
@@ -36,6 +34,7 @@ class _ProfileState extends State<Profile> {
           const SizedBox(
             height: 10,
           ),
+
           Center(
             child: Container(
                 width: 90,
@@ -55,6 +54,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 )),
           ),
+
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
                   color: OColors.white.withOpacity(.9)),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -104,6 +105,7 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
+
           //Circle Container
 
           //About Driver
@@ -138,6 +140,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
+
           //Vehicle
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -169,6 +172,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
+
           //Vehicle
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35.0),
