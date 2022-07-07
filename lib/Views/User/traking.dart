@@ -108,7 +108,9 @@ class TrackingState extends State<Tracking> {
       PointLatLng(destination.latitude, destination.longitude),
     );
 
-    print(result);
+    print("result -poly");
+    print(result.points);
+    print(result.status);
 
     if (result.points.isNotEmpty) {
       result.points.forEach(
@@ -120,7 +122,8 @@ class TrackingState extends State<Tracking> {
         polylineCoordinates.addAll(polylines);
       });
 
-      print(polylineCoordinates);
+      print("polylineCoordinates.first");
+      print(polylineCoordinates.first);
     }
   }
 

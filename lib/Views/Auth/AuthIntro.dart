@@ -63,8 +63,6 @@ class AuthIntroState extends State<AuthIntro>
             st += 0.2;
 
             style = TextStyle(fontSize: 24, color: OColors.white);
-
-            print(st);
           } else if (mil == 800) {
             carWidth = 200;
             style = TextStyle(fontSize: 16, color: OColors.white);
