@@ -16,8 +16,8 @@ class Tracking extends StatefulWidget {
 class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
-  LatLng sourceLocation = LatLng(27.6683619, 85.3101895);
-  LatLng destination = LatLng(27.6688312, 85.3077329);
+  LatLng destination = LatLng(-6.7666642, 39.231338),
+      sourceLocation = LatLng(-6.7991724, 39.2060481);
 
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
@@ -25,14 +25,19 @@ class TrackingState extends State<Tracking> {
 
   List<LatLng> polylineCoordinates = [];
 
+  Set<Marker> markers = Set(); //markers for google map
+  Map<PolylineId, Polyline> polylines = {}; //polylines to show direction
+
   LocationData? currentLocation;
 
   @override
   void initState() {
     super.initState();
-    getPolyPoints();
     getCurrentLocation();
+
     setCustomMarkerIcon();
+
+    getPolyPoints();
   }
 
   @override
@@ -50,17 +55,32 @@ class TrackingState extends State<Tracking> {
                 Marker(
                   markerId: const MarkerId("currentLocation"),
                   icon: currentLocationIcon,
+                  infoWindow: InfoWindow(
+                    //popup info
+                    title: 'Current Point ',
+                    snippet: 'Start Marker',
+                  ),
                   position: LatLng(
                       currentLocation!.latitude!, currentLocation!.longitude!),
                 ),
                 Marker(
                   markerId: const MarkerId("source"),
                   icon: sourceIcon,
+                  infoWindow: InfoWindow(
+                    //popup info
+                    title: 'Source Point ',
+                    snippet: 'Source Marker',
+                  ),
                   position: sourceLocation,
                 ),
                 Marker(
                   markerId: MarkerId("destination"),
                   icon: destinationIcon,
+                  infoWindow: InfoWindow(
+                    //popup info
+                    title: 'Destination Point ',
+                    snippet: 'Destination Marker',
+                  ),
                   position: destination,
                 ),
               },
@@ -81,18 +101,26 @@ class TrackingState extends State<Tracking> {
 
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
+    List<LatLng> polylines = [];
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key, // Your Google Map Key
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
+
+    print(result);
+
     if (result.points.isNotEmpty) {
       result.points.forEach(
-        (PointLatLng point) => polylineCoordinates.add(
+        (PointLatLng point) => polylines.add(
           LatLng(point.latitude, point.longitude),
         ),
       );
-      setState(() {});
+      setState(() {
+        polylineCoordinates.addAll(polylines);
+      });
+
+      print(polylineCoordinates);
     }
   }
 
@@ -105,6 +133,28 @@ class TrackingState extends State<Tracking> {
         });
       },
     );
+
+    _controller.future.then((controller) {
+      location.onLocationChanged.listen(
+        (newLoc) {
+          setState(() {
+            currentLocation = newLoc;
+          });
+
+          controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                zoom: 13.5,
+                target: LatLng(
+                  newLoc.latitude!,
+                  newLoc.longitude!,
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    });
 
     print("Location---");
     print(currentLocation);

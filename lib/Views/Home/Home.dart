@@ -367,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
               // Map
-              const Tracking(),
+              Tracking(),
 
               if (paged == 0)
                 postion1
