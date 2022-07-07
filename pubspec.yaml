@@ -48,6 +48,7 @@ dependencies:
   firebase_core:
   flutter_polyline_points:
   location:
+  flutter_svg:
 
 
 dev_dependencies:
