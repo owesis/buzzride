@@ -1,10 +1,9 @@
+import 'package:buzzride/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../constants.dart';
-
-class RiderInfo extends StatelessWidget {
-  const RiderInfo({
+class Rider extends StatelessWidget {
+  const Rider({
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +16,7 @@ class RiderInfo extends StatelessWidget {
         child: ListTile(
           leading: const CircleAvatar(
             radius: 24,
-            backgroundImage: AssetImage("assets/Avatar.png"),
+            backgroundImage: AssetImage("assets/images/Avatar.png"),
           ),
           title: const Text(
             "Mike Rojnidoost",
@@ -34,7 +33,7 @@ class RiderInfo extends StatelessWidget {
             ),
             onPressed: () {},
             child: SvgPicture.asset(
-              "assets/icons/chat.svg",
+              "assets/images/chat.svg",
               color: Colors.white,
             ),
           ),

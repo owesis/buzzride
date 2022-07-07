@@ -2,7 +2,6 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
-import 'package:buzzride/Util/mapConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -462,7 +461,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<LatLng> polylineCoordinates = [];
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      mapKey,
+      google_api_key,
       PointLatLng(startLocation.latitude, startLocation.longitude),
       PointLatLng(endLocation.latitude, endLocation.longitude),
       travelMode: TravelMode.driving,
