@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       position: startLocation, //position of marker
       infoWindow: InfoWindow(
         //popup info
-        title: 'Starting Point ',
+        title: 'Starting Point',
         snippet: 'Start Marker',
       ),
       icon: BitmapDescriptor.defaultMarker, //Icon for Marker

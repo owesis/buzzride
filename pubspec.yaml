@@ -45,8 +45,9 @@ dependencies:
   image_picker:
   geolocator: 
   google_maps_flutter:   
-  firebase_core: ^1.19.1
-  flutter_polyline_points: ^1.0.0
+  firebase_core:
+  flutter_polyline_points:
+  location:
 
 
 dev_dependencies:
