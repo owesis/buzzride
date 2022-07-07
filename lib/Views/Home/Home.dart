@@ -2,6 +2,7 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
+import 'package:buzzride/Views/User/traking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -184,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: OColors.borderColor.withOpacity(.1),
             ),
             ListTile(
-              onTap: () => () {},
+              onTap: () => Pager(context, const Tracking()),
               leading: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
