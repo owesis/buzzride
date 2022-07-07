@@ -16,8 +16,8 @@ class Tracking extends StatefulWidget {
 class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  LatLng sourceLocation = LatLng(27.6683619, 85.3101895);
+  LatLng destination = LatLng(27.6688312, 85.3077329);
 
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
@@ -29,21 +29,15 @@ class TrackingState extends State<Tracking> {
 
   @override
   void initState() {
+    super.initState();
     getPolyPoints();
     getCurrentLocation();
     setCustomMarkerIcon();
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Track order",
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
-      ),
       body: currentLocation == null
           ? const Center(child: Text("Loading...."))
           : GoogleMap(
@@ -106,46 +100,33 @@ class TrackingState extends State<Tracking> {
     Location location = Location();
     location.getLocation().then(
       (location) {
-        currentLocation = location;
+        setState(() {
+          currentLocation = location;
+        });
       },
     );
-    GoogleMapController googleMapController = await _controller.future;
-    location.onLocationChanged.listen(
-      (newLoc) {
-        currentLocation = newLoc;
-        googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              zoom: 13.5,
-              target: LatLng(
-                newLoc.latitude!,
-                newLoc.longitude!,
-              ),
-            ),
-          ),
-        );
-        setState(() {});
-      },
-    );
+
+    print("Location---");
+    print(currentLocation);
   }
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, "assets/Pin_source.png")
+            ImageConfiguration.empty, "assets/images/Pin_source.png")
         .then(
       (icon) {
         sourceIcon = icon;
       },
     );
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, "assets/Pin_destination.png")
+            ImageConfiguration.empty, "assets/images/Pin_destination.png")
         .then(
       (icon) {
         destinationIcon = icon;
       },
     );
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, "assets/Badge.png")
+            ImageConfiguration.empty, "assets/images/Badge.png")
         .then(
       (icon) {
         currentLocationIcon = icon;

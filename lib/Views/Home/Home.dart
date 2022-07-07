@@ -4,9 +4,6 @@ import 'package:buzzride/Util/Util.dart';
 import 'package:buzzride/Util/divider.dart';
 import 'package:buzzride/Views/User/traking.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Util/Locale.dart';
 import '../../Util/pallets.dart';
@@ -23,21 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController lct = TextEditingController();
   String location = '';
 
-  GoogleMapController? mapController;
-  List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints = PolylinePoints();
-
-  Set<Marker> markers = Set(); //markers for google map
-  Map<PolylineId, Polyline> polylines = {}; //polylines to show direction
-
-  LatLng startLocation = LatLng(27.6683619, 85.3101895);
-  LatLng endLocation = LatLng(27.6688312, 85.3077329);
-
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
-
-  late Position currentPosition;
-  var geoLocator = Geolocator();
 
   bool isSwahili = false, isVisibleDrawer = true, r = false;
   int paged = 0;
@@ -62,48 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     _drawerController = ZiDrawerController();
-
-    _goToTheLake();
-
-    markers.add(Marker(
-      //add start location marker
-      markerId: MarkerId(startLocation.toString()),
-      position: startLocation, //position of marker
-      infoWindow: InfoWindow(
-        //popup info
-        title: 'Starting Point',
-        snippet: 'Start Marker',
-      ),
-      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    ));
-
-    markers.add(Marker(
-      //add distination location marker
-      markerId: MarkerId(endLocation.toString()),
-      position: endLocation, //position of marker
-      infoWindow: InfoWindow(
-        //popup info
-        title: 'Destination Point ',
-        snippet: 'Destination Marker',
-      ),
-      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    ));
-
-    getDirections(); //fetch direction polylines from Google API
-  }
-
-  Future<void> _goToTheLake() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    currentPosition = position;
-    LatLng latLngPosition = LatLng(position.latitude, position.longitude);
-    setState(() {
-      startLocation = latLngPosition;
-    });
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latLngPosition, zoom: 14);
-    mapController
-        ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   void menuCategories() {
@@ -425,24 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
               // Map
-              GoogleMap(
-                //Map widget from google_maps_flutter package
-                zoomGesturesEnabled: true, //enable Zoom in, out on map
-                initialCameraPosition: CameraPosition(
-                  //innital position in map
-                  target: startLocation, //initial position
-                  zoom: 16.0, //initial zoom level
-                ),
-                markers: markers, //markers to show on map
-                polylines: Set<Polyline>.of(polylines.values), //polylines
-                mapType: MapType.normal, //map type
-                onMapCreated: (controller) {
-                  //method called when map is created
-                  setState(() {
-                    mapController = controller;
-                  });
-                },
-              ),
+              const Tracking(),
 
               if (paged == 0)
                 postion1
@@ -456,38 +381,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ]),
           ),
         ));
-  }
-
-  getDirections() async {
-    List<LatLng> polylineCoordinates = [];
-
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      google_api_key,
-      PointLatLng(startLocation.latitude, startLocation.longitude),
-      PointLatLng(endLocation.latitude, endLocation.longitude),
-      travelMode: TravelMode.driving,
-    );
-
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print(result.errorMessage);
-    }
-    addPolyLine(polylineCoordinates);
-  }
-
-  addPolyLine(List<LatLng> polylineCoordinates) {
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.deepPurpleAccent,
-      points: polylineCoordinates,
-      width: 8,
-    );
-    polylines[id] = polyline;
-    setState(() {});
   }
 
   Positioned menuButton(BuildContext context) {
