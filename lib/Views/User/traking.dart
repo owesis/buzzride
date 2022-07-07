@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class OrderTrackingPage extends StatefulWidget {
-  const OrderTrackingPage({Key? key}) : super(key: key);
+class Tracking extends StatefulWidget {
+  const Tracking({Key? key}) : super(key: key);
 
   @override
-  State<OrderTrackingPage> createState() => OrderTrackingPageState();
+  State<Tracking> createState() => TrackingState();
 }
 
-class OrderTrackingPageState extends State<OrderTrackingPage> {
+class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
