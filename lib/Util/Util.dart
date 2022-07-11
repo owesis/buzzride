@@ -19,7 +19,8 @@ int background = 0xffF9F9F9;
 int inputColor = 0xff606060;
 Color minerColor = Color.fromRGBO(255, 255, 255, 1);
 
-const String google_api_key = "AIzaSyDSfkhQhqwzQyd0XBsvi-ZKSDUy5lI-Wqw";
+// const String google_api_key = "AIzaSyDSfkhQhqwzQyd0XBsvi-ZKSDUy5lI-Wqw";
+const String google_api_key = "AIzaSyBXaUI3UwJ7VwcWOAV7rnDnz6U-24B-IMY";
 const Color primaryColor = Color(0xFF7B61FF);
 const double defaultPadding = 16.0;
 

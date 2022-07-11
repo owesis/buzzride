@@ -4,6 +4,7 @@ import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -35,7 +36,7 @@ class TrackingState extends State<Tracking> {
   void initState() {
     super.initState();
     getCurrentLocation();
-
+    getAddress(sourceLocation.latitude, sourceLocation.longitude);
     setCustomMarkerIcon();
 
     getPolyPoints();
@@ -69,8 +70,8 @@ class TrackingState extends State<Tracking> {
                   icon: sourceIcon,
                   infoWindow: InfoWindow(
                     //popup info
-                    title: 'Source Point ',
-                    snippet: 'Source Marker',
+                    title: 'Frank Galos',
+                    snippet: "Source",
                   ),
                   position: sourceLocation,
                 ),
@@ -100,6 +101,19 @@ class TrackingState extends State<Tracking> {
     );
   }
 
+  getAddress(double? lat, double? lang) {
+    print("Address_");
+    _getAddress(lat, lang).then((value) => print(value));
+  }
+
+  Future<String> _getAddress(double? lat, double? lang) async {
+    List<geocoding.Placemark> placemarks =
+        await geocoding.placemarkFromCoordinates(52.2165157, 6.9437819);
+
+    print(placemarks[1]);
+    return "";
+  }
+
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
     List<LatLng> polylines = [];
@@ -108,10 +122,6 @@ class TrackingState extends State<Tracking> {
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
-
-    print("result -poly");
-    print(result.points);
-    print(result.status);
 
     if (result.points.isNotEmpty) {
       result.points.forEach(
@@ -122,9 +132,6 @@ class TrackingState extends State<Tracking> {
       setState(() {
         polylineCoordinates.addAll(polylines);
       });
-
-      print("polylineCoordinates.first");
-      print(polylineCoordinates.first);
     }
   }
 

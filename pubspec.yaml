@@ -49,6 +49,7 @@ dependencies:
   flutter_polyline_points:
   location:
   flutter_svg:
+  geocoding:
 
 
 dev_dependencies:
