@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -17,7 +18,7 @@ class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng destination = LatLng(-6.7666642, 39.231338),
-      sourceLocation = LatLng(-6.7991724, 39.2060481);
+      sourceLocation = LatLng(-6.7913044, 39.2296587);
 
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
@@ -91,7 +92,7 @@ class TrackingState extends State<Tracking> {
                 Polyline(
                   polylineId: const PolylineId("route"),
                   points: polylineCoordinates,
-                  color: const Color(0xFF7B61FF),
+                  color: OColors.primary,
                   width: 6,
                 ),
               },
@@ -143,6 +144,10 @@ class TrackingState extends State<Tracking> {
           setState(() {
             currentLocation = newLoc;
           });
+
+          print("Location");
+          print(
+              newLoc.latitude!.toString() + "," + newLoc.longitude!.toString());
 
           controller.animateCamera(
             CameraUpdate.newCameraPosition(

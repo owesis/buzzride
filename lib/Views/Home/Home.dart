@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: OColors.borderColor.withOpacity(.1),
             ),
             ListTile(
-              onTap: () => Pager(context, const Tracking()),
+              onTap: () => Pager(context, const MyHomePage()),
               leading: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
