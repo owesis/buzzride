@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location/location.dart';
 
 class Tracking extends StatefulWidget {
@@ -19,7 +20,9 @@ class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng destination = LatLng(-6.7666642, 39.231338),
-      sourceLocation = LatLng(-6.7913044, 39.2296587);
+      sourceLocation = LatLng(-6.7910434, 39.2304914);
+
+  double earthRadius = 6371000;
 
   String sourceAddress = '', currentAddress = '', destinationIconAddress = '';
 
@@ -38,10 +41,10 @@ class TrackingState extends State<Tracking> {
   void initState() {
     super.initState();
     getCurrentLocation();
-    sourceAddress =
-        getAddress(sourceLocation.latitude, sourceLocation.longitude);
-    destinationIconAddress =
-        getAddress(destination.latitude, destination.longitude);
+    getAddress(sourceLocation.latitude, sourceLocation.longitude)
+        .then((value) => sourceAddress = value);
+    getAddress(destination.latitude, destination.longitude)
+        .then((value) => destinationIconAddress = value);
     setCustomMarkerIcon();
 
     getPolyPoints();
@@ -64,7 +67,7 @@ class TrackingState extends State<Tracking> {
                   icon: currentLocationIcon,
                   infoWindow: InfoWindow(
                     //popup info
-                    title: 'Current Point ',
+                    title: 'Frank Galos',
                     snippet: currentAddress,
                   ),
                   position: LatLng(
@@ -106,16 +109,41 @@ class TrackingState extends State<Tracking> {
     );
   }
 
-  getAddress(double? lat, double? lang) {
-    print("Address_");
-    return _getAddress(lat, lang).then((value) => print(value));
+  //Calculating the distance between two points
+  getDistance() {
+    double? cl = currentLocation!.latitude, clo = currentLocation!.longitude;
+
+    // var dLat = radians(sourceLocation.latitude - cl!);
+    // var dLng = radians(sourceLocation.longitude - clo!);
+    // var a = sin(dLat / 2) * sin(dLat / 2) +
+    //     cos(radians(cl)) *
+    //         cos(radians(sourceLocation.latitude)) *
+    //         sin(dLng / 2) *
+    //         sin(dLng / 2);
+    // var c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    // var d = earthRadius * c;
+    // print("d is the distance in meters" + d.floor().toString());
+    // print(d.floor()); //d is the distance in meters
+
+    var gcd = new GreatCircleDistance.fromDegrees(
+        latitude1: cl,
+        longitude1: clo,
+        latitude2: sourceLocation.latitude,
+        longitude2: sourceLocation.longitude);
+
+    print(
+        'Distance from location 1 to 2 using the Haversine formula is: ${gcd.haversineDistance()}');
+    print(
+        'Distance from location 1 to 2 using the Spherical Law of Cosines is: ${gcd.sphericalLawOfCosinesDistance()}');
+    print(
+        'Distance from location 1 to 2 using the Vicenty`s formula is: ${gcd.vincentyDistance()}');
   }
 
-  Future<String> _getAddress(double? lat, double? lang) async {
+  Future<String> getAddress(double? lat, double? lang) async {
     List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(52.2165157, 6.9437819);
+        await geocoding.placemarkFromCoordinates(lat!, lang!);
 
-    return "${placemarks[0].country}, ${placemarks[0].street}";
+    return "${placemarks[0].subAdministrativeArea}, ${placemarks[0].street}";
   }
 
   void getPolyPoints() async {
@@ -145,17 +173,16 @@ class TrackingState extends State<Tracking> {
       (location) {
         setState(() {
           currentLocation = location;
+          getDistance();
         });
       },
     );
 
     _controller.future.then((controller) {
       location.onLocationChanged.listen(
-        (newLoc) {
-          setState(() {
-            currentLocation = newLoc;
-            currentAddress = getAddress(newLoc.latitude, newLoc.longitude);
-          });
+        (newLoc) async {
+          currentLocation = newLoc;
+          currentAddress = await getAddress(newLoc.latitude, newLoc.longitude);
 
           print("Location");
           print(
