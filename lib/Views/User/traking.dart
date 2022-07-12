@@ -21,6 +21,8 @@ class TrackingState extends State<Tracking> {
   LatLng destination = LatLng(-6.7666642, 39.231338),
       sourceLocation = LatLng(-6.7913044, 39.2296587);
 
+  String sourceAddress = '', currentAddress = '', destinationIconAddress = '';
+
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
@@ -36,7 +38,10 @@ class TrackingState extends State<Tracking> {
   void initState() {
     super.initState();
     getCurrentLocation();
-    getAddress(sourceLocation.latitude, sourceLocation.longitude);
+    sourceAddress =
+        getAddress(sourceLocation.latitude, sourceLocation.longitude);
+    destinationIconAddress =
+        getAddress(destination.latitude, destination.longitude);
     setCustomMarkerIcon();
 
     getPolyPoints();
@@ -60,7 +65,7 @@ class TrackingState extends State<Tracking> {
                   infoWindow: InfoWindow(
                     //popup info
                     title: 'Current Point ',
-                    snippet: 'Start Marker',
+                    snippet: currentAddress,
                   ),
                   position: LatLng(
                       currentLocation!.latitude!, currentLocation!.longitude!),
@@ -71,7 +76,7 @@ class TrackingState extends State<Tracking> {
                   infoWindow: InfoWindow(
                     //popup info
                     title: 'Frank Galos',
-                    snippet: "Source",
+                    snippet: sourceAddress,
                   ),
                   position: sourceLocation,
                 ),
@@ -81,7 +86,7 @@ class TrackingState extends State<Tracking> {
                   infoWindow: InfoWindow(
                     //popup info
                     title: 'Destination Point ',
-                    snippet: 'Destination Marker',
+                    snippet: destinationIconAddress,
                   ),
                   position: destination,
                 ),
@@ -103,15 +108,14 @@ class TrackingState extends State<Tracking> {
 
   getAddress(double? lat, double? lang) {
     print("Address_");
-    _getAddress(lat, lang).then((value) => print(value));
+    return _getAddress(lat, lang).then((value) => print(value));
   }
 
   Future<String> _getAddress(double? lat, double? lang) async {
     List<geocoding.Placemark> placemarks =
         await geocoding.placemarkFromCoordinates(52.2165157, 6.9437819);
 
-    print(placemarks[1]);
-    return "";
+    return "${placemarks[0].country}, ${placemarks[0].street}";
   }
 
   void getPolyPoints() async {
@@ -150,6 +154,7 @@ class TrackingState extends State<Tracking> {
         (newLoc) {
           setState(() {
             currentLocation = newLoc;
+            currentAddress = getAddress(newLoc.latitude, newLoc.longitude);
           });
 
           print("Location");
