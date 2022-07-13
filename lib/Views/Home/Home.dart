@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
-import 'package:buzzride/Util/Util.dart';
-import 'package:buzzride/Util/divider.dart';
 import 'package:buzzride/Views/User/traking.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 import '../../Util/Locale.dart';
+import '../../Util/Util.dart';
 import '../../Util/pallets.dart';
 import '../profile/profile.dart';
 
@@ -17,14 +21,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final Completer<GoogleMapController> _controller = Completer();
   TextEditingController lct = TextEditingController();
-  String location = '';
+  String location = '', currentAddress = '';
 
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
 
   bool isSwahili = false, isVisibleDrawer = true, r = false;
   int paged = 0;
+
+  LocationData? currentLocation;
 
   List<Widget> menus = [
     ListTile(
@@ -43,9 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    getCurrentLocation();
+    _drawerController = ZiDrawerController();
+
     // TODO: implement initState
     super.initState();
-    _drawerController = ZiDrawerController();
   }
 
   void menuCategories() {
@@ -383,6 +392,48 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
+  Future<String> getAddress(double? lat, double? lang) async {
+    List<geocoding.Placemark> placemarks =
+        await geocoding.placemarkFromCoordinates(lat!, lang!);
+
+    geocoding.Placemark place = placemarks[0];
+    setState(() {
+      currentAddress =
+          "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+
+      print(currentAddress);
+    });
+
+    return "${place.name},${place.subAdministrativeArea}, ${place.locality}";
+  }
+
+  void getCurrentLocation() async {
+    Location location = Location();
+    location.getLocation().then(
+      (location) {
+        print("Home");
+        print(location);
+        setState(() {
+          currentLocation = location;
+          getAddress(location.latitude, location.longitude);
+
+          print("Location---Home------" + currentAddress);
+          print(currentLocation);
+        });
+      },
+    );
+
+    location.onLocationChanged.listen((newLoc) {
+      getAddress(newLoc.latitude, newLoc.longitude)
+          .then((value) => setState(() {
+                currentAddress = value;
+                currentLocation = newLoc;
+
+                print(currentAddress + "homa");
+              }));
+    });
+  }
+
   Positioned menuButton(BuildContext context) {
     return Positioned(
         top: 25,
@@ -488,7 +539,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: const EdgeInsets.only(top: 5, bottom: 5),
                             child: RichText(
                                 textAlign: TextAlign.start,
-                                text: const TextSpan(children: [
+                                text: TextSpan(children: [
                                   TextSpan(
                                       text: 'From : ',
                                       style: TextStyle(
@@ -496,7 +547,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           fontSize: 12.0,
                                           color: Colors.white)),
                                   TextSpan(
-                                      text: ' Posta-Shaban Robart str',
+                                      text: currentAddress,
                                       style: TextStyle(
                                           fontSize: 13.0, color: Colors.white)),
                                 ])),
@@ -1116,10 +1167,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
-
-  Widget get divDier => Column(children: const [
-        SizedBox(height: 25),
-        DividerWidget(),
-        SizedBox(height: 10),
-      ]);
 }
