@@ -22,11 +22,14 @@ class TimeTravel {
     // print(toMap());
     return await http
         .get(url, headers: {"Content-Type": "Application/json"}).then((res) {
-      // print(res.body);
+      var rs = jsonDecode(res.body),
+          distance = rs['rows'][0]['elements'][0]['distance']['text'],
+          time = rs['rows'][0]['elements'][0]['duration']['text'];
+
       if (res.statusCode == 200) {
-        return TimeTravel.fromJson(jsonDecode(res.body));
+        return TimeTravel.fromJson({"distance": distance, 'time': time});
       } else {
-        return TimeTravel.fromJson(jsonDecode(res.body));
+        return TimeTravel.fromJson({"distance": distance, 'time': time});
       }
     });
   }

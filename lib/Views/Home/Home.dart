@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
-import 'package:buzzride/Views/User/traking.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,6 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final Completer<GoogleMapController> _controller = Completer();
   TextEditingController lct = TextEditingController();
   String location = '', currentAddress = '';
+  LocationData? currentLocation;
 
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isSwahili = false, isVisibleDrawer = true, r = false;
   int paged = 0;
 
-  LocationData? currentLocation;
+  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
   List<Widget> menus = [
     ListTile(
@@ -51,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     getCurrentLocation();
+    setCustomMarkerIcon();
     _drawerController = ZiDrawerController();
 
     // TODO: implement initState
@@ -375,16 +376,32 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
-              // Map
-              Tracking(),
-
-              if (paged == 0)
-                postion1
-              else if (paged == 1)
-                postion2
-              else
-                postion3,
-
+              currentLocation == null
+                  ? const Center(child: Text("Loading...."))
+                  : GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(currentLocation!.latitude!,
+                            currentLocation!.longitude!),
+                        zoom: 13.5,
+                      ),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId("currentLocation"),
+                          icon: currentLocationIcon,
+                          infoWindow: InfoWindow(
+                            //popup info
+                            title: 'Frank Galos',
+                            snippet: currentAddress,
+                          ),
+                          position: LatLng(currentLocation!.latitude!,
+                              currentLocation!.longitude!),
+                        ),
+                      },
+                      onMapCreated: (mapController) {
+                        _controller.complete(mapController);
+                      },
+                    ),
+              position,
               // Drawer
               menuButton(context),
             ]),
@@ -488,7 +505,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget get postion1 => Positioned(
+  Widget get position => Positioned(
       bottom: 20,
       child: Container(
         alignment: Alignment.center,
@@ -1165,6 +1182,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  void setCustomMarkerIcon() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty, "assets/images/Pin_current_location.png")
+        .then(
+      (icon) {
+        currentLocationIcon = icon;
+      },
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math' show cos, sqrt, asin;
 
+import 'package:buzzride/Models/TimeTravel.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Util.dart';
 import 'package:flutter/foundation.dart';
@@ -21,9 +23,10 @@ class TrackingState extends State<Tracking> {
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng? destination = LatLng(-6.7666642, 39.231338),
-      sourceLocation = LatLng(-6.7910434, 39.2304914);
+      sourceLocation = LatLng(-6.8173163, 39.2216505);
 
   double earthRadius = 6371000;
+  String duration = '', distance = '';
 
   String sourceAddress = '', currentAddress = '', destinationIconAddress = '';
 
@@ -109,15 +112,41 @@ class TrackingState extends State<Tracking> {
   }
 
   //Calculating the distance between two points
-  getDistance() {
-    //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=lat,lng&destinations=lat,lng&key=API-Key
+  getDistance() async {
     var ad = Geolocator.distanceBetween(
         sourceLocation!.latitude,
         sourceLocation!.longitude,
-        destination!.longitude,
+        destination!.latitude,
         destination!.longitude);
 
-    print("Distance of" + ad.toString());
+    print(ad);
+
+    print("Distances....");
+    TimeTravel travel = await TimeTravel().getDistance(
+        lat1: sourceLocation!.latitude.toString(),
+        long1: sourceLocation!.longitude.toString(),
+        lat2: destination!.latitude.toString(),
+        long2: destination!.longitude.toString());
+
+    double dist = _coordinateDistance(
+        sourceLocation!.latitude,
+        sourceLocation!.longitude,
+        destination!.latitude,
+        destination!.longitude);
+
+    setState(() {
+      duration = travel.time!;
+      distance = dist.toStringAsFixed(2) + " Km";
+    });
+  }
+
+  double _coordinateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 
   Future<String> getAddress(double? lat, double? lang) async {
