@@ -21,7 +21,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Completer<GoogleMapController> _controller = Completer();
-  TextEditingController lct = TextEditingController();
+  TextEditingController lct = TextEditingController(),
+      currentLocationInput = TextEditingController();
   String location = '', currentAddress = '';
   LocationData? currentLocation;
 
@@ -418,6 +419,9 @@ class _MyHomePageState extends State<MyHomePage> {
       currentAddress =
           "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
+      currentLocationInput.text =
+          "${place.name}, ${place.locality}, ${place.postalCode}";
+
       print(currentAddress);
     });
 
@@ -441,13 +445,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     location.onLocationChanged.listen((newLoc) {
-      getAddress(newLoc.latitude, newLoc.longitude)
-          .then((value) => setState(() {
-                currentAddress = value;
-                currentLocation = newLoc;
+      currentLocation = newLoc;
+    });
 
-                print(currentAddress + "homa");
-              }));
+    setState(() {
+      currentLocationInput.text = currentAddress;
     });
   }
 
@@ -480,7 +482,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const Icon(
           Icons.arrow_forward,
           size: 17,
-          color: Colors.green,
+          color: Colors.white54,
         ),
         location.isNotEmpty
             ? const SizedBox(
@@ -498,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ? const Icon(
                 Icons.arrow_forward,
                 size: 17,
-                color: Colors.green,
+                color: Colors.white54,
               )
             : const SizedBox(),
       ],
@@ -554,27 +556,36 @@ class _MyHomePageState extends State<MyHomePage> {
                               : const SizedBox(),
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 5),
-                            child: RichText(
-                                textAlign: TextAlign.start,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: 'From : ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12.0,
-                                          color: Colors.white)),
-                                  TextSpan(
-                                      text: currentAddress,
-                                      style: TextStyle(
-                                          fontSize: 13.0, color: Colors.white)),
-                                ])),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "From:",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  child: TextField(
+                                    controller: currentLocationInput,
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
+                                  ),
+                                  width: 200,
+                                  height: 20,
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       ),
 
                       location.isNotEmpty
                           ? Divider(
-                              color: OColors.borderColor.withOpacity(.5),
+                              color: OColors.white.withOpacity(1),
                             )
                           : const SizedBox(
                               height: 2,
