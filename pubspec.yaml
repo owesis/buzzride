@@ -50,6 +50,7 @@ dependencies:
   location:
   flutter_svg:
   geocoding:
+  address_search_field: ^5.0.1
 
 
 dev_dependencies:

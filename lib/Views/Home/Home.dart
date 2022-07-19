@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:address_search_field/address_search_field.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Completer<GoogleMapController> _controller = Completer();
-  TextEditingController lct = TextEditingController(),
+  TextEditingController destinationController = TextEditingController(),
       currentLocationInput = TextEditingController();
   String location = '', currentAddress = '';
   LocationData? currentLocation;
+  List<LatLng> cars = [
+    LatLng(-6.7731, 39.2196),
+    LatLng(-6.7669, 39.2265),
+    LatLng(-6.7715, 39.2287),
+    LatLng(-6.8166, 39.2208),
+    LatLng(-6.8163, 39.2229),
+    LatLng(-6.8163, 39.2229),
+  ];
+
+  Set<Marker> markers = Set();
 
   // ignore: prefer_typing_uninitialized_variables
   late final _drawerController;
@@ -49,17 +60,30 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  late Address destinationAddress;
+  final geoMethods = GeoMethods(
+    googleApiKey: google_api_key,
+    language: 'sw',
+    countryCode: 'tz',
+    countryCodes: ['tz'],
+    country: 'Tanzania',
+    city: 'Dar es salaam',
+  );
+
   @override
   void initState() {
     getCurrentLocation();
     setCustomMarkerIcon();
     _drawerController = ZiDrawerController();
 
+    geoMethods.autocompletePlace(query: 'place streets or reference');
+    geoMethods.geoLocatePlace(coords: Coords(-6.82349, 39.26951));
+
     // TODO: implement initState
     super.initState();
   }
 
-  void menuCategories() {
+  menuCategories() {
     setState(() {
       menus.add(Container(
         // height: 250,   // Screen OverFlow 45 pixer
@@ -251,15 +275,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   search() {
-    if (lct.text.isNotEmpty) {
+    if (destinationController.text.isNotEmpty) {
       setState(() {
-        location = lct.text.toString();
+        location = destinationController.text.toString();
       });
     }
   }
 
   go() {
-    if (lct.text.isNotEmpty) {
+    if (destinationController.text.isNotEmpty) {
       setState(() {
         paged = 1;
       });
@@ -267,10 +291,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   send() {
-    if (lct.text.isNotEmpty) {
+    if (destinationController.text.isNotEmpty) {
       setState(() {
         paged = 2;
         r = true;
+      });
+    }
+  }
+
+  getCarsPosition() {
+    print("object................");
+    setState(() {
+      markers.add(Marker(
+        markerId: const MarkerId("currentLocation"),
+        icon: currentLocationIcon,
+        infoWindow: InfoWindow(
+          //popup info
+          title: 'Frank Galos',
+          snippet: currentAddress,
+        ),
+        position:
+            LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      ));
+    });
+
+    for (var i = 0; i <= cars.length - 1; i++) {
+      setState(() {
+        markers.add(Marker(
+          markerId: const MarkerId("carsLocation"),
+          icon: currentLocationIcon,
+          infoWindow: InfoWindow(
+            //popup info
+            title: 'Frank Galos',
+            snippet: currentAddress,
+          ),
+          position: cars[i],
+        ));
       });
     }
   }
@@ -375,6 +431,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: SafeArea(
             child: Stack(alignment: Alignment.center, children: [
               currentLocation == null
@@ -385,19 +442,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             currentLocation!.longitude!),
                         zoom: 13.5,
                       ),
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId("currentLocation"),
-                          icon: currentLocationIcon,
-                          infoWindow: InfoWindow(
-                            //popup info
-                            title: 'Frank Galos',
-                            snippet: currentAddress,
-                          ),
-                          position: LatLng(currentLocation!.latitude!,
-                              currentLocation!.longitude!),
-                        ),
-                      },
+                      markers: markers,
                       onMapCreated: (mapController) {
                         _controller.complete(mapController);
                       },
@@ -411,24 +456,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<String> getAddress(double? lat, double? lang) async {
-    List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(lat!, lang!);
+    return geocoding.placemarkFromCoordinates(lat!, lang!).then((placemarks) {
+      geocoding.Placemark place = placemarks[0];
 
-    geocoding.Placemark place = placemarks[0];
-    setState(() {
-      currentAddress =
-          "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+      setState(() {
+        currentAddress =
+            "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
-      currentLocationInput.text =
-          "${place.name}, ${place.locality}, ${place.postalCode}";
+        currentLocationInput.text =
+            "${place.name}, ${place.locality}, ${place.postalCode}";
 
-      print(currentAddress);
+        print(currentAddress);
+      });
+
+      return "${place.name},${place.subAdministrativeArea}, ${place.locality}";
     });
-
-    return "${place.name},${place.subAdministrativeArea}, ${place.locality}";
   }
 
-  void getCurrentLocation() async {
+  getCurrentLocation() async {
     Location location = Location();
     location.getLocation().then(
       (location) {
@@ -438,6 +483,7 @@ class _MyHomePageState extends State<MyHomePage> {
           currentLocation = location;
           getAddress(location.latitude, location.longitude);
 
+          getCarsPosition();
           print("Location---Home------" + currentAddress);
           print(currentLocation);
         });
@@ -606,7 +652,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Container(
                                       padding: const EdgeInsets.only(left: 4.0),
                                       child: TextField(
-                                        controller: lct,
+                                        controller: destinationController,
                                         decoration: InputDecoration(
                                             hintText: 'Where to?',
                                             hintStyle: const TextStyle(
@@ -630,6 +676,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                             fontSize: 19),
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.search,
+                                        onTap: () => showDialog(
+                                            builder: (BuildContext context) =>
+                                                AddressSearchDialog(
+                                                  geoMethods: geoMethods,
+                                                  controller:
+                                                      destinationController,
+                                                  onDone: (Address address) =>
+                                                      destinationAddress =
+                                                          address,
+                                                ),
+                                            context: context),
                                         onChanged: (value) {
                                           setState(() {
                                             //_email = value;
@@ -1139,7 +1196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 4.0),
                               child: TextField(
-                                controller: lct,
+                                controller: destinationController,
                                 decoration: const InputDecoration(
                                   hintText: 'Where to?',
                                   hintStyle: TextStyle(
@@ -1196,9 +1253,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void setCustomMarkerIcon() {
+  setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, "assets/images/Pin_current_location.png")
+            ImageConfiguration.empty, "assets/images/car-mini.png")
         .then(
       (icon) {
         currentLocationIcon = icon;
