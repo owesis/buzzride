@@ -4,6 +4,7 @@ import 'package:address_search_field/address_search_field.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -59,6 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
   ];
+
+  final routeProvider =
+      ChangeNotifierProvider<RouteNotifier>((ref) => RouteNotifier());
 
   late Address destinationAddress;
   final geoMethods = GeoMethods(
@@ -283,6 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   go() {
+    print("Go");
     if (destinationController.text.isNotEmpty) {
       setState(() {
         paged = 1;
@@ -443,11 +448,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         zoom: 13.5,
                       ),
                       markers: markers,
+                      liteModeEnabled: true,
                       onMapCreated: (mapController) {
                         _controller.complete(mapController);
                       },
+                      compassEnabled: true,
                     ),
-              position,
+              container(),
               // Drawer
               menuButton(context),
             ]),
@@ -498,6 +505,26 @@ class _MyHomePageState extends State<MyHomePage> {
       currentLocationInput.text = currentAddress;
     });
   }
+
+  Positioned container({Widget? child}) => Positioned(
+      bottom: 10,
+      child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width / 1.2,
+        decoration: BoxDecoration(
+            color: OColors.primary,
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(.3),
+                  blurRadius: 16.0,
+                  spreadRadius: 0.5,
+                  offset: const Offset(0.7, 0.7))
+            ]),
+        child: Column(
+          children: [Text("data")],
+        ),
+      ));
 
   Positioned menuButton(BuildContext context) {
     return Positioned(
@@ -677,16 +704,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.search,
                                         onTap: () => showDialog(
-                                            builder: (BuildContext context) =>
-                                                AddressSearchDialog(
-                                                  geoMethods: geoMethods,
-                                                  controller:
-                                                      destinationController,
-                                                  onDone: (Address address) =>
-                                                      destinationAddress =
-                                                          address,
-                                                ),
-                                            context: context),
+                                          builder: (BuildContext context) =>
+                                              AddressSearchDialog(
+                                            geoMethods: geoMethods,
+                                            controller: destinationController,
+                                            onDone: (Address address) =>
+                                                destinationAddress = address,
+                                          ),
+                                          context: context,
+                                        ),
                                         onChanged: (value) {
                                           setState(() {
                                             //_email = value;
@@ -735,11 +761,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(location,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: Text(location,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15)),
+                                    ),
                                   ],
                                 ),
 
@@ -879,7 +909,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )),
 
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
 
@@ -942,23 +972,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/bizzmap.png'),
-                          fit: BoxFit.fill,
-
-                          // colorFilter:
-                          //     const ColorFilter.mode(Colors.black54, BlendMode.darken),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 15.0,
                     ),
@@ -971,13 +984,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('First Lastname',
+                              Text('Frank Galos',
                                   style: driverProfile.copyWith(
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(
                                 height: 5,
                               ),
-                              const Text('Driver', style: driverProfile),
                               RichText(
                                   textAlign: TextAlign.start,
                                   text: const TextSpan(children: [
@@ -1011,7 +1023,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(width: 160, child: transportInfo()),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 1.9,
+                            child: transportInfo()),
                         Column(
                           children: const [
                             Text(
@@ -1154,7 +1168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(),
                     RichText(
                         textAlign: TextAlign.start,
-                        text: const TextSpan(children: [
+                        text: TextSpan(children: [
                           TextSpan(
                               text: 'From : ',
                               style: TextStyle(
@@ -1162,7 +1176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontSize: 11.0,
                                   color: Colors.white)),
                           TextSpan(
-                              text: ' Posta-Shaban Robart str',
+                              text: currentAddress,
                               style: TextStyle(
                                   fontSize: 11.0, color: Colors.white)),
                         ])),
@@ -1224,26 +1238,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       )
                     :
                     // Drop Off
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //Search box
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('DROP OFF',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white70,
-                                      fontSize: 13)),
-                              Text(location,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14)),
-                            ],
-                          ),
-                        ],
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Text('DROP OFF',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white70,
+                                    fontSize: 13)),
+                            SizedBox(
+                              height: 200,
+                              width: 100,
+                              child: Column(
+                                children: [
+                                  Text(location,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
               ],
             ),

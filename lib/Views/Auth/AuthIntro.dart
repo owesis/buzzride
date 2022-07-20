@@ -9,8 +9,6 @@ import 'package:buzzride/Views/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'phoneAuth.dart';
-
 class AuthIntro extends StatefulWidget {
   const AuthIntro({Key? key}) : super(key: key);
 
@@ -201,7 +199,7 @@ class AuthIntroState extends State<AuthIntro>
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const PhoneNumber())),
+                                      MyHomePage())),
                         ),
                       ),
                     ), //BUTTON
