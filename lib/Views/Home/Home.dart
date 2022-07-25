@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController destinationController = TextEditingController(),
       currentLocationInput = TextEditingController();
   String location = '', currentAddress = '';
-  LocationData? currentLocation;
+  LocationData? currentLocation, sourceLocation;
   List<LatLng> cars = [
     LatLng(-6.7731, 39.2196),
     LatLng(-6.7669, 39.2265),
@@ -42,9 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
   late final _drawerController;
 
   bool isSwahili = false, isVisibleDrawer = true, r = false;
-  int paged = 0;
+  int display = 0;
 
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor carsIcon = BitmapDescriptor.defaultMarker;
 
   List<Widget> menus = [
     ListTile(
@@ -81,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _drawerController = ZiDrawerController();
 
     geoMethods.autocompletePlace(query: 'place streets or reference');
-    geoMethods.geoLocatePlace(coords: Coords(-6.82349, 39.26951));
+    // geoMethods.geoLocatePlace(coords: Coords(-6.82349, 39.26951));
 
     // TODO: implement initState
     super.initState();
@@ -289,18 +290,13 @@ class _MyHomePageState extends State<MyHomePage> {
   go() {
     print("Go");
     if (destinationController.text.isNotEmpty) {
-      setState(() {
-        paged = 1;
-      });
+      setState(() {});
     }
   }
 
   send() {
     if (destinationController.text.isNotEmpty) {
-      setState(() {
-        paged = 2;
-        r = true;
-      });
+      setState(() {});
     }
   }
 
@@ -315,8 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: 'Frank Galos',
           snippet: currentAddress,
         ),
-        position:
-            LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+        position: LatLng(sourceLocation!.latitude!, sourceLocation!.longitude!),
       ));
     });
 
@@ -324,7 +319,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         markers.add(Marker(
           markerId: const MarkerId("carsLocation"),
-          icon: currentLocationIcon,
+          icon: carsIcon,
           infoWindow: InfoWindow(
             //popup info
             title: 'Frank Galos',
@@ -488,17 +483,44 @@ class _MyHomePageState extends State<MyHomePage> {
         print(location);
         setState(() {
           currentLocation = location;
+          sourceLocation = location;
           getAddress(location.latitude, location.longitude);
 
           getCarsPosition();
+
           print("Location---Home------" + currentAddress);
           print(currentLocation);
         });
       },
     );
 
-    location.onLocationChanged.listen((newLoc) {
-      currentLocation = newLoc;
+    _controller.future.then((controller) {
+      location.onLocationChanged.listen(
+        (newLoc) {
+          getAddress(newLoc.latitude, newLoc.longitude)
+              .then((value) => setState(() {
+                    currentAddress = value;
+                    currentLocation = newLoc;
+                    sourceLocation = newLoc;
+                  }));
+
+          print("Location");
+          print(
+              newLoc.latitude!.toString() + "," + newLoc.longitude!.toString());
+
+          controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                zoom: 13.5,
+                target: LatLng(
+                  newLoc.latitude!,
+                  newLoc.longitude!,
+                ),
+              ),
+            ),
+          );
+        },
+      );
     });
 
     setState(() {
@@ -521,10 +543,148 @@ class _MyHomePageState extends State<MyHomePage> {
                   spreadRadius: 0.5,
                   offset: const Offset(0.7, 0.7))
             ]),
-        child: Column(
-          children: [Text("data")],
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: display == 0
+              ? searchAddress
+              : display == 1
+                  ? vehiclesView
+                  : amountView,
         ),
       ));
+
+  Widget get searchAddress => Row(
+        children: [
+          Container(
+            alignment: Alignment.topLeft,
+            height: 60,
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "From: ",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 20,
+                          child: TextField(
+                            controller: currentLocationInput,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.white70),
+                            decoration:
+                                InputDecoration(border: InputBorder.none),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //Search box
+                      SizedBox(
+                        width: 175,
+                        // decoration: BoxDecoration(
+                        //   // color: Colors.grey[500]!.withOpacity(0.5),
+                        //   // borderRadius: BorderRadius.circular(8),
+                        // ),
+                        child: Container(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: TextField(
+                              controller: destinationController,
+                              decoration: InputDecoration(
+                                  hintText: 'Where to?',
+                                  hintStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 19),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: OColors.white.withOpacity(1)),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white.withOpacity(.5)),
+                                  )),
+                              // obscureText: true,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 19),
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.search,
+                              onTap: () => showDialog(
+                                builder: (BuildContext context) =>
+                                    AddressSearchDialog(
+                                  geoMethods: geoMethods,
+                                  controller: destinationController,
+                                  onDone: (Address address) =>
+                                      destinationAddress = address,
+                                ),
+                                context: context,
+                              ),
+                            )),
+                      ),
+
+                      // Search Icon
+                      GestureDetector(
+                        onTap: () => setState(() {
+                          display = 1;
+                        }),
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 16.0),
+                          decoration: BoxDecoration(
+                            color: OColors.buttonColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          // ignore: deprecated_member_use
+                          child: const Padding(
+                            padding: EdgeInsets.all(7.0),
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      );
+
+  Widget get vehiclesView => Expanded(
+          child: ListView(
+        children: [],
+      ));
+
+  Widget get amountView => Column();
 
   Positioned menuButton(BuildContext context) {
     return Positioned(
@@ -1274,6 +1434,14 @@ class _MyHomePageState extends State<MyHomePage> {
   setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration.empty, "assets/images/car-mini.png")
+        .then(
+      (icon) {
+        carsIcon = icon;
+      },
+    );
+
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty, "assets/images/Badge.png")
         .then(
       (icon) {
         currentLocationIcon = icon;
