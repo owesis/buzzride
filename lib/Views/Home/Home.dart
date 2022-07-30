@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:address_search_field/address_search_field.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Drawer/drawer.dart';
+import 'package:buzzride/Views/User/traking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -71,6 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
     countryCodes: ['tz'],
     country: 'Tanzania',
     city: 'Dar es salaam',
+  );
+
+  SpinKitFadingFour spinkit = const SpinKitFadingFour(
+    color: Colors.white,
+    size: 50.0,
   );
 
   @override
@@ -522,11 +529,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ]),
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: display == 0
-              ? searchAddress
-              : display == 1
-                  ? vehiclesView
-                  : amountView,
+          child: searchAddress,
         ),
       ));
 
@@ -627,9 +630,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
                       // Search Icon
                       GestureDetector(
-                        onTap: () => setState(() {
-                          display = 1;
-                        }),
+                        onTap: () {
+                          if (destinationController.text.isNotEmpty &&
+                              currentLocationInput.text.isNotEmpty) {
+                            Pager(
+                                context,
+                                Tracking(
+                                  from: currentLocationInput.text,
+                                  to: destinationController.text,
+                                ));
+                          }
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(top: 16.0),
                           decoration: BoxDecoration(
@@ -672,7 +683,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  Positioned logoOnMap() {
+  Positioned logo() {
     return Positioned(
         top: 10,
         right: 0,

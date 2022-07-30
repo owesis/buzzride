@@ -13,13 +13,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class Tracking extends StatefulWidget {
-  const Tracking({Key? key}) : super(key: key);
+  const Tracking({Key? key, this.from, this.to}) : super(key: key);
 
+  final String? from, to;
   @override
-  State<Tracking> createState() => TrackingState();
+  State<Tracking> createState() => TrackingState(address: this.from);
 }
 
 class TrackingState extends State<Tracking> {
+  TrackingState({String? address});
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng? destination = LatLng(-6.7666642, 39.231338),
