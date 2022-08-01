@@ -4,9 +4,9 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:buzzride/Models/TimeTravel.dart';
 import 'package:buzzride/Util/Colors.dart';
 import 'package:buzzride/Util/Util.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,75 +43,156 @@ class TrackingState extends State<Tracking> {
 
   LocationData? currentLocation;
 
+  SpinKitFadingFour spinkit = const SpinKitFadingFour(
+    color: Colors.blue,
+    size: 70.0,
+  );
+
+  CameraPosition cameraPosition = CameraPosition(
+    target: LatLng(-6.8173163, 39.2216505),
+    zoom: 13.5,
+  );
+
   @override
   void initState() {
     super.initState();
+
+    // get from coordinates
+    getCoordinatesFromAddress(widget.from!).then((value) {
+      print("From");
+      print(value[0].latitude);
+      setState(
+          () => sourceLocation = LatLng(value[0].latitude, value[0].longitude));
+    });
+
+    // get to coordinates
+    getCoordinatesFromAddress(widget.to!).then((value) {
+      print("To");
+      print(value);
+      setState(
+          () => destination = LatLng(value[0].latitude, value[0].longitude));
+      cameraPosition = CameraPosition(
+        target: LatLng(value[0].latitude, value[0].longitude),
+        zoom: 18,
+      );
+    });
+
     getCurrentLocation();
     getAddress(sourceLocation!.latitude, sourceLocation!.longitude)
-        .then((value) => sourceAddress = value);
+        .then((value) => setState(() => sourceAddress = value));
     getAddress(destination!.latitude, destination!.longitude)
-        .then((value) => destinationIconAddress = value);
+        .then((value) => setState(() => currentAddress = value));
     setCustomMarkerIcon();
+
+    cameraPosition = CameraPosition(
+      target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      zoom: 13.5,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    print("current");
+    print(currentAddress);
     return Scaffold(
-      body: currentLocation == null
-          ? const Center(child: Text("Loading...."))
-          : GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    currentLocation!.latitude!, currentLocation!.longitude!),
-                zoom: 13.5,
+      body: SafeArea(
+        child: currentLocation == null
+            ? Center(
+                child: spinkit,
+              )
+            : Stack(
+                alignment: Alignment.center,
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: cameraPosition,
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId("currentLocation"),
+                        icon: currentLocationIcon,
+                        infoWindow: InfoWindow(
+                          //popup info
+                          title: 'Frank Galos',
+                          snippet: currentAddress,
+                        ),
+                        position: LatLng(currentLocation!.latitude!,
+                            currentLocation!.longitude!),
+                      ),
+                      Marker(
+                        markerId: const MarkerId("source"),
+                        icon: sourceIcon,
+                        infoWindow: InfoWindow(
+                          //popup info
+                          title: 'Frank Galos',
+                          snippet: sourceAddress,
+                        ),
+                        position: sourceLocation!,
+                      ),
+                      Marker(
+                        markerId: MarkerId("destination"),
+                        icon: destinationIcon,
+                        infoWindow: InfoWindow(
+                          //popup info
+                          title: 'Destination Point ',
+                          snippet: destinationIconAddress,
+                        ),
+                        position: destination!,
+                      ),
+                    },
+                    onMapCreated: (mapController) {
+                      _controller.complete(mapController);
+                    },
+                    polylines: {
+                      Polyline(
+                        polylineId: const PolylineId("route"),
+                        points: polylineCoordinates,
+                        color: OColors.primary,
+                        width: 6,
+                      ),
+                    },
+                  ),
+                  container()
+                ],
               ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId("currentLocation"),
-                  icon: currentLocationIcon,
-                  infoWindow: InfoWindow(
-                    //popup info
-                    title: 'Frank Galos',
-                    snippet: currentAddress,
-                  ),
-                  position: LatLng(
-                      currentLocation!.latitude!, currentLocation!.longitude!),
-                ),
-                Marker(
-                  markerId: const MarkerId("source"),
-                  icon: sourceIcon,
-                  infoWindow: InfoWindow(
-                    //popup info
-                    title: 'Frank Galos',
-                    snippet: sourceAddress,
-                  ),
-                  position: sourceLocation!,
-                ),
-                Marker(
-                  markerId: MarkerId("destination"),
-                  icon: destinationIcon,
-                  infoWindow: InfoWindow(
-                    //popup info
-                    title: 'Destination Point ',
-                    snippet: destinationIconAddress,
-                  ),
-                  position: destination!,
-                ),
-              },
-              onMapCreated: (mapController) {
-                _controller.complete(mapController);
-              },
-              polylines: {
-                Polyline(
-                  polylineId: const PolylineId("route"),
-                  points: polylineCoordinates,
-                  color: OColors.primary,
-                  width: 6,
-                ),
-              },
-            ),
+      ),
     );
   }
+
+  Positioned container({Widget? child}) => Positioned(
+      bottom: 10,
+      child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width / 1.1,
+        decoration: BoxDecoration(
+            color: OColors.primary,
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(.3),
+                  blurRadius: 16.0,
+                  spreadRadius: 0.5,
+                  offset: const Offset(0.7, 0.7))
+            ]),
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: vehiclesView,
+        ),
+      ));
+
+  Widget get vehiclesView => Column(
+        children: [
+          ListTile(
+            title: Text("Help!"),
+          ),
+          ListTile(
+            title: Text("Help!"),
+          ),
+          ListTile(
+            title: Text("Help!"),
+          ),
+        ],
+      );
+
+  Widget get amountView => Column();
 
   //Calculating the distance between two points
   getDistance() async {
@@ -159,12 +240,12 @@ class TrackingState extends State<Tracking> {
     return "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
   }
 
-  Future<String> getCoordinatesFromAddress(String address) async {
+  Future<List<geocoding.Location>> getCoordinatesFromAddress(
+      String address) async {
     List<geocoding.Location> locations =
         await geocoding.locationFromAddress(address);
 
-    print(locations);
-    return "";
+    return locations;
   }
 
   void getCurrentLocation() async {

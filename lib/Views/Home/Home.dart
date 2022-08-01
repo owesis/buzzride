@@ -76,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
   );
 
   SpinKitFadingFour spinkit = const SpinKitFadingFour(
-    color: Colors.white,
-    size: 50.0,
+    color: Colors.blue,
+    size: 70.0,
   );
 
   @override
@@ -416,11 +416,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: SafeArea(
-            child: Stack(alignment: Alignment.center, children: [
-              currentLocation == null
-                  ? const Center(child: Text("Loading...."))
-                  : GoogleMap(
+          body: currentLocation == null
+              ? spinkit
+              : SafeArea(
+                  child: Stack(alignment: Alignment.center, children: [
+                    GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: LatLng(currentLocation!.latitude!,
                             currentLocation!.longitude!),
@@ -433,11 +433,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       compassEnabled: true,
                     ),
-              container(),
-              // Drawer
-              menuButton(context),
-            ]),
-          ),
+                    container(),
+                    // Drawer
+                    menuButton(context),
+                  ]),
+                ),
         ));
   }
 
