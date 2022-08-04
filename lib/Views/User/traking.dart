@@ -61,19 +61,24 @@ class TrackingState extends State<Tracking> {
     getCoordinatesFromAddress(widget.from!).then((value) {
       print("From");
       print(value[0].latitude);
-      setState(
-          () => sourceLocation = LatLng(value[0].latitude, value[0].longitude));
+      sourceLocation = LatLng(value[0].latitude, value[0].longitude);
+
+      // cameraPosition = CameraPosition(
+      //   target: LatLng(value[0].latitude, value[0].longitude),
+      //   zoom: 13.5,
+      // );
     });
 
     // get to coordinates
     getCoordinatesFromAddress(widget.to!).then((value) {
       print("To");
       print(value);
-      setState(
-          () => destination = LatLng(value[0].latitude, value[0].longitude));
+
+      destination = LatLng(value[0].latitude, value[0].longitude);
+
       cameraPosition = CameraPosition(
         target: LatLng(value[0].latitude, value[0].longitude),
-        zoom: 18,
+        zoom: 13.5,
       );
     });
 
@@ -84,10 +89,14 @@ class TrackingState extends State<Tracking> {
         .then((value) => setState(() => currentAddress = value));
     setCustomMarkerIcon();
 
-    cameraPosition = CameraPosition(
-      target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-      zoom: 13.5,
-    );
+    // if (currentLocation != null)
+    //   Timer.periodic(const Duration(seconds: 20), (timer) {
+    //     cameraPosition = CameraPosition(
+    //       target:
+    //           LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+    //       zoom: 13.5,
+    //     );
+    //   });
   }
 
   @override
