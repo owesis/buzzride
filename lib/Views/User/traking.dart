@@ -189,8 +189,15 @@ class TrackingState extends State<Tracking> {
 
   Widget get vehiclesView => Column(
         children: [
-          ListTile(
-            title: Text("Help!"),
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                child: Image.asset(
+                  "assets/images/vehicles/bajaji.png",
+                ),
+              ))
+            ],
           ),
           ListTile(
             title: Text("Help!"),
