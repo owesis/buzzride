@@ -9,6 +9,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 
 class Tracking extends StatefulWidget {
@@ -239,18 +240,19 @@ class TrackingState extends State<Tracking> {
             child: Container(
               margin: EdgeInsets.only(left: 15, top: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "${title}",
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         color: OColors.white,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "${duration}",
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: OColors.white,
                         fontWeight: FontWeight.bold),
                   )
@@ -265,9 +267,9 @@ class TrackingState extends State<Tracking> {
               child: Text(
                 "${calculatePrice(title.toLowerCase())}",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: OColors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.w900),
               ),
             ),
           ),
@@ -312,29 +314,30 @@ class TrackingState extends State<Tracking> {
         bajaji = 550,
         buzz = 750,
         truck = 1000,
-        distance = distant;
+        distance = distant,
+        pp = 0;
 
-    print("prices");
-    print(p);
+    print("Types V");
+    print(vType);
 
-    if (vType != null) {
-      switch (vType) {
-        case "pikipiki":
-          p = distance > 1
-              ? pikipiki.toString()
-              : (pikipiki * distance).toString();
-          break;
-        case "bajaji":
-          p = distance > 1 ? bajaji.toString() : (bajaji * distance).toString();
-          break;
-        case "buzz":
-          p = distance > 1 ? buzz.toString() : (buzz * distance).toString();
-          break;
-        case "truck":
-          p = distance > 1 ? truck.toString() : (truck * distance).toString();
-          break;
-      }
+    switch (vType) {
+      case "pikipiki":
+        pp = distance <= 1 ? pikipiki : (pikipiki * distance);
+        break;
+      case "bajaji":
+        pp = distance <= 1 ? bajaji : (bajaji * distance);
+        break;
+      case "buzz":
+        pp = distance <= 1 ? buzz : (buzz * distance);
+        break;
+      case "truck":
+        pp = distance <= 1 ? truck : (truck * distance);
+        break;
     }
+
+    final n = NumberFormat("#,##0", "sw");
+
+    p = n.format(pp.round());
 
     return "${p} ${prefx}";
   }
