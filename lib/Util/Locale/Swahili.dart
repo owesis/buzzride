@@ -5,7 +5,7 @@ class Swahili {
 
   final int key;
   List dictionary = [
-    "Zali",
+    "BuzzRide",
     "",
     "",
     "",

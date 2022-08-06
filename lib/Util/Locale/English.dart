@@ -5,7 +5,7 @@ class English {
   English(this.key) : super();
   final int key;
   List dictionary = [
-    "Owesis",
+    "BuzzRide",
     "",
     "CONTINUE",
     "",

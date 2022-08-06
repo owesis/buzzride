@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -27,8 +26,8 @@ class TrackingState extends State<Tracking> {
   LatLng? destination = LatLng(-6.7666642, 39.231338),
       sourceLocation = LatLng(-6.8173163, 39.2216505);
 
-  double earthRadius = 6371000;
-  String duration = '', distance = '';
+  double earthRadius = 6371000, distant = 0;
+  String duration = '', distance = '', price = '';
 
   String sourceAddress = '', currentAddress = '', destinationIconAddress = '';
 
@@ -50,8 +49,15 @@ class TrackingState extends State<Tracking> {
 
   CameraPosition cameraPosition = CameraPosition(
     target: LatLng(-6.8173163, 39.2216505),
-    zoom: 13.5,
+    zoom: 20,
   );
+
+  List vehicles = [
+    ["assets/images/pikipiki.png", 'Pikipiki'],
+    ["assets/images/bajaji.png", 'Bajaji'],
+    ["assets/images/tax.png", 'Buzz'],
+    ["assets/images/mini-truck.png", 'Truck'],
+  ];
 
   @override
   void initState() {
@@ -78,7 +84,7 @@ class TrackingState extends State<Tracking> {
 
       cameraPosition = CameraPosition(
         target: LatLng(value[0].latitude, value[0].longitude),
-        zoom: 13.5,
+        zoom: 12.4,
       );
     });
 
@@ -101,8 +107,15 @@ class TrackingState extends State<Tracking> {
 
   @override
   Widget build(BuildContext context) {
+    getDistance();
     print("current");
     print(currentAddress);
+    print("Distance");
+    print(distance);
+    print("Duration");
+    print(duration);
+    print("Price");
+    print(price);
     return Scaffold(
       body: SafeArea(
         child: currentLocation == null
@@ -187,38 +200,89 @@ class TrackingState extends State<Tracking> {
         ),
       ));
 
-  Widget get vehiclesView => Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                  child: Container(
-                child: Image.asset(
-                  "assets/images/vehicles/bajaji.png",
-                ),
-              ))
-            ],
+  Widget get vehiclesView => Container(
+        height: 320,
+        child: ListView.builder(
+          itemBuilder: (context, index) => InkWell(
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                      top: index > 0
+                          ? BorderSide(color: Colors.white70.withOpacity(.3))
+                          : BorderSide.none)),
+              padding: EdgeInsets.only(top: 15, bottom: 15),
+              child: vehiclesWidget(
+                  icon: vehicles[index][0],
+                  title: vehicles[index][1].toString()),
+            ),
+            onTap: () {},
           ),
-          ListTile(
-            title: Text("Help!"),
-          ),
-          ListTile(
-            title: Text("Help!"),
-          ),
-        ],
+          itemCount: vehicles.length,
+        ),
       );
 
   Widget get amountView => Column();
 
+  Widget vehiclesWidget({required String icon, required String title}) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Image.asset(
+                  "$icon",
+                ),
+              )),
+          Expanded(
+            flex: 2,
+            child: Container(
+              margin: EdgeInsets.only(left: 15, top: 10),
+              child: Column(
+                children: [
+                  Text(
+                    "${title}",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: OColors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${duration}",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: OColors.white,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              margin: EdgeInsets.only(left: 15, top: 10),
+              child: Text(
+                "${calculatePrice(title.toLowerCase())}",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: OColors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      );
+
   //Calculating the distance between two points
   getDistance() async {
-    var ad = Geolocator.distanceBetween(
-        sourceLocation!.latitude,
-        sourceLocation!.longitude,
-        destination!.latitude,
-        destination!.longitude);
-
-    print(ad);
+    // var ad = Geolocator.distanceBetween(
+    //     sourceLocation!.latitude,
+    //     sourceLocation!.longitude,
+    //     destination!.latitude,
+    //     destination!.longitude);
+    //
+    // print(ad);
 
     print("Distances....");
     TimeTravel travel = await TimeTravel().getDistance(
@@ -235,8 +299,44 @@ class TrackingState extends State<Tracking> {
 
     setState(() {
       duration = travel.time!;
+
+      distant = dist;
+
       distance = dist.toStringAsFixed(2) + " Km";
     });
+  }
+
+  String calculatePrice(String vType) {
+    String p = "0", prefx = "Tsh";
+    double pikipiki = 350,
+        bajaji = 550,
+        buzz = 750,
+        truck = 1000,
+        distance = distant;
+
+    print("prices");
+    print(p);
+
+    if (vType != null) {
+      switch (vType) {
+        case "pikipiki":
+          p = distance > 1
+              ? pikipiki.toString()
+              : (pikipiki * distance).toString();
+          break;
+        case "bajaji":
+          p = distance > 1 ? bajaji.toString() : (bajaji * distance).toString();
+          break;
+        case "buzz":
+          p = distance > 1 ? buzz.toString() : (buzz * distance).toString();
+          break;
+        case "truck":
+          p = distance > 1 ? truck.toString() : (truck * distance).toString();
+          break;
+      }
+    }
+
+    return "${p} ${prefx}";
   }
 
   double _coordinateDistance(lat1, lon1, lat2, lon2) {
@@ -274,6 +374,7 @@ class TrackingState extends State<Tracking> {
           sourceLocation = LatLng(location.latitude!, location.longitude!);
 
           getPolyPoints();
+
           getDistance();
         });
       },
